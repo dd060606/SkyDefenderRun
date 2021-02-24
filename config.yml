@@ -38,6 +38,8 @@ skydefenderconfig:
     dayscoordsmessage: 5
     daysbeforeassault: 3
     minutesbannercooldown: 10
+    kits:
+      enabled: true
     teams:
       defenseurs:
         maxplayers: 4

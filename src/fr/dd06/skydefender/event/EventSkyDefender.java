@@ -4,6 +4,7 @@ package fr.dd06.skydefender.event;
 import fr.dd06.skydefender.SkyDefenderRun;
 import fr.dd06.skydefender.game.BannerAttack;
 import fr.dd06.skydefender.game.SkyDefenderEnd;
+import fr.dd06.skydefender.kits.Kit;
 import fr.dd06.skydefender.scoreboards.CustomScoreBoard;
 import fr.dd06.skydefender.game.AutoStart;
 import fr.dd06.skydefender.utils.BlockLocationChecker;
@@ -83,6 +84,12 @@ public class EventSkyDefender implements Listener {
 						num++;
 					}
 
+				}
+				for(Kit kit: Kit.values()) {
+					if(kit.getPlayersKit().contains(player.getUniqueId())) {
+						kit.getPlayersKit().remove(player.getUniqueId());
+						break;
+					}
 				}
 
 			}
@@ -318,29 +325,37 @@ public class EventSkyDefender implements Listener {
 		Player player = event.getPlayer();
 		Action action = event.getAction();
 		ItemStack it = event.getItem();
-		if (SkyDefenderRun.getGamestarted() == false) {
-			if (main.getConfig().getConfigurationSection("skydefenderconfig.teamchooser")
-					.getBoolean("enabled") == true) {
-				if (it == null)
-					return;
+		if (!SkyDefenderRun.getGamestarted()) {
+			if(it != null) {
+				if (main.getConfig().getConfigurationSection("skydefenderconfig.teamchooser")
+						.getBoolean("enabled")) {
 
-				if (it.getType() == Material.BANNER && it.hasItemMeta()
-						&& it.getItemMeta().getDisplayName().equals("§eChoisir une équipe")) {
-					if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-						Inventory teamchoosergui = Bukkit.createInventory(null, 18, "§8Choisir une équipe");
 
-						teamchoosergui.setItem(3, getItem(Material.BANNER, "§9Défenseur", (byte) 4));
-						teamchoosergui.setItem(4, getItem(Material.BANNER, "§cAttaquant", (byte) 1));
-						teamchoosergui.setItem(5, getItem(Material.BANNER, "§fAléatoire", (byte) 15));
-						teamchoosergui.setItem(13, getItem(Material.WOOL, "§4Fermer", (byte) 14));
-						teamchoosergui.setItem(8, getItem(Material.BANNER, "§5Spectateur", (byte) 5));
+					if (it.getType() == Material.BANNER && it.hasItemMeta()
+							&& it.getItemMeta().getDisplayName().equals("§eChoisir une équipe")) {
+						if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
+							Inventory teamchoosergui = Bukkit.createInventory(null, 18, "§8Choisir une équipe");
 
-						player.openInventory(teamchoosergui);
+							teamchoosergui.setItem(3, getItem(Material.BANNER, "§9Défenseur", (byte) 4));
+							teamchoosergui.setItem(4, getItem(Material.BANNER, "§cAttaquant", (byte) 1));
+							teamchoosergui.setItem(5, getItem(Material.BANNER, "§fAléatoire", (byte) 15));
+							teamchoosergui.setItem(13, getItem(Material.WOOL, "§4Fermer", (byte) 14));
+							teamchoosergui.setItem(8, getItem(Material.BANNER, "§5Spectateur", (byte) 5));
 
+							player.openInventory(teamchoosergui);
+
+						}
 					}
+
 				}
 
+
+
 			}
+			else {
+				return;
+			}
+
 		}
 		if(main.isPaused() ==true) {
 			event.setCancelled(true);
@@ -481,6 +496,42 @@ public class EventSkyDefender implements Listener {
 				player.sendMessage("§aVous avez rejoint l'équipe des §5Spectateurs !");
 
 			}
+		}
+
+		if(inv.getName().equals("§6Kits")) {
+
+
+			for(Kit kit: Kit.values()) {
+
+				if(current.getItemMeta() != null && current.getItemMeta().getDisplayName() != null) {
+					if(current.getItemMeta().getDisplayName().equals("§b" + kit.getName())) {
+						if(!kit.getPlayersKit().contains(player.getUniqueId())) {
+							Kit.selectKit(player,kit);
+							player.sendMessage("§aVous avez choisi le kit " + "§b" +kit.getName() + " !");
+							Kit.giveItemsToPlayer(player);
+							player.closeInventory();
+							break;
+
+						}
+
+					}
+					if(current.getItemMeta().getDisplayName().equals("§bRandom")) {
+						Kit.selectRandomKit(player);
+						Kit.giveItemsToPlayer(player);
+						player.closeInventory();
+
+						player.sendMessage("§aVous avez choisi un kit aléatoire !");
+						break;
+
+					}
+				}
+
+
+			}
+			e.setCancelled(true);
+
+
+
 		}
 	}
 

@@ -5,6 +5,7 @@ import fr.dd06.skydefender.SkyDefenderRun;
 import fr.dd06.skydefender.GameTime;
 import fr.dd06.skydefender.event.EventSkyDefender;
 import fr.dd06.skydefender.game.BannerAttack;
+import fr.dd06.skydefender.kits.Kit;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -42,13 +43,19 @@ public class SaveGame {
 				saveConfig.set("save.players." + uuid + ".attaquants", true);
 			}
 			else {
-				saveConfig.set("save.players." + uuid + ".attaquants", false);
+				saveConfig.set("save.players."  + uuid + ".attaquants", false);
 			}
 			if(EventSkyDefender.kills.get(uuid) != null) {
 				saveConfig.set("save.players."+uuid+".kills", EventSkyDefender.kills.get(uuid));
 			}
 			else {
 				saveConfig.set("save.players."+uuid+".kills", 0 );
+			}
+
+			for(Kit kit : Kit.values()) {
+				if(kit.getPlayersKit().contains(player.getUniqueId())) {
+					saveConfig.set("save.players."+uuid+".kit", kit.getId());
+				}
 			}
 		}
 

@@ -5,6 +5,7 @@ import fr.dd06.skydefender.SkyDefenderRun;
 import fr.dd06.skydefender.GameTime;
 import fr.dd06.skydefender.event.EventSkyDefender;
 import fr.dd06.skydefender.game.BannerAttack;
+import fr.dd06.skydefender.kits.Kit;
 import fr.dd06.skydefender.scoreboards.CustomScoreBoard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -73,8 +74,12 @@ public class RestoreGame {
 
 			}
 			EventSkyDefender.kills.put(uuid, saveConfig.getInt("save.players." + uuid+".kills"));
-			
-			
+			if(saveConfig.getString("save.players."+uuid+".kit") != null) {
+				Kit.selectKit(Bukkit.getPlayer(uuid), Kit.getKitFromId(saveConfig.getString("save.players."+uuid+".kit")));
+
+			}
+
+
 
 			CustomScoreBoard oldscoreboard = main.boards.get(uuid);
 			if(oldscoreboard != null) {

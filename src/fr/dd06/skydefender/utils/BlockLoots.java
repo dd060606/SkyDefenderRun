@@ -36,7 +36,7 @@ public class BlockLoots {
         }
         else if(block.getType().equals(Material.LEAVES)) {
             Random random = new Random();
-            if(random.nextInt(10) == 1) {
+            if(random.nextInt(15) == 1) {
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.APPLE, 1));
 
             }
@@ -44,7 +44,7 @@ public class BlockLoots {
         }
         else if(block.getType().equals(Material.LEAVES_2)) {
             Random random = new Random();
-            if(random.nextInt(5) == 1) {
+            if(random.nextInt(15) == 1) {
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.APPLE, 1));
 
             }

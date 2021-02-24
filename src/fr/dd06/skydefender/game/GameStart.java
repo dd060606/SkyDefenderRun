@@ -3,6 +3,7 @@ package fr.dd06.skydefender.game;
 import fr.dd06.skydefender.SkyDefenderRun;
 
 import fr.dd06.skydefender.GameTime;
+import fr.dd06.skydefender.kits.Kit;
 import fr.dd06.skydefender.scoreboards.CustomScoreBoard;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -127,6 +128,8 @@ public class GameStart {
 
 			SkyDefenderRun.setGamestarted(true);
 
+
+
 			if(!main.spectateurs.contains(allplayers.getUniqueId())) {
 			CustomScoreBoard scoreboard = new CustomScoreBoard(allplayers, "§bSkyDefender");
 			scoreboard.destroy();
@@ -144,9 +147,9 @@ public class GameStart {
 				main.updateSpectatorsBoards(allplayers.getUniqueId());
 			}
 			
-			
 
-			
+
+
 		}
 		GameTime gameTime = new GameTime(main);
 		gameTime.runTaskTimer(main, 0, 20);

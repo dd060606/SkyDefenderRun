@@ -9,8 +9,11 @@ commands:
     usage: Syntaxe fausse ! Utiliser /sd .
     permission: skydefender.sd
   coords:
-    description: Afficher les coordonnées
+    description: Afficher les coordonnées.
     usage: Syntaxe fausse ! Utiliser /coords .
+  kits:
+    description: Choisir un kit.
+    usage: Syntaxe fausse ! Utiliser /kits .
 permissions:
   skydefender.*:
     description: Permet d'avoir toute les permissions.

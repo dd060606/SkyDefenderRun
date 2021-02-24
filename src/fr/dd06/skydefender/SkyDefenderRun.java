@@ -2,11 +2,14 @@ package fr.dd06.skydefender;
 
 
 import fr.dd06.skydefender.commands.CommandCoords;
+import fr.dd06.skydefender.commands.CommandKits;
 import fr.dd06.skydefender.commands.CommandSkyDefender;
 import fr.dd06.skydefender.event.EventSkyDefender;
 import fr.dd06.skydefender.game.BannerAttack;
+import fr.dd06.skydefender.kits.Kit;
 import fr.dd06.skydefender.pause.SaveConfig;
 import fr.dd06.skydefender.scoreboards.CustomScoreBoard;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -31,6 +34,8 @@ public class SkyDefenderRun extends JavaPlugin implements Listener {
 	public ArrayList<UUID> defenseurs = new ArrayList<>();
 	public ArrayList<UUID> attaquants = new ArrayList<>();
 	public ArrayList<UUID> spectateurs = new ArrayList<>();
+
+
 
 	private static boolean gamestarted = false;
 	private boolean paused;
@@ -63,6 +68,7 @@ public class SkyDefenderRun extends JavaPlugin implements Listener {
 
 		getCommand("sd").setExecutor(new CommandSkyDefender(this));
 		getCommand("coords").setExecutor(new CommandCoords());
+		getCommand("kits").setExecutor(new CommandKits(this));
 
 	}
 
@@ -164,6 +170,11 @@ public class SkyDefenderRun extends JavaPlugin implements Listener {
 
 			if(BannerAttack.attacking) {
 				scoreboard.setLine(9, "§cAttaque : " + BannerAttack.minutes + "mins | "+BannerAttack.secondes + "secs/" +SkyDefenderRun.getInstance().getMinutesBannerCooldown() + "mins");
+			}
+
+			if(Kit.hasKit(Bukkit.getPlayer(uuid))) {
+
+				scoreboard.setLine(10, "§dKit : §c" + Kit.getPlayerKit(Bukkit.getPlayer(uuid)).getName());
 			}
 		}
 	}
