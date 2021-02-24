@@ -1,0 +1,41 @@
+name: SkyDefenderRun
+main: fr.dd06.skydefender.SkyDefenderRun
+version: 1.0
+description: Plugin de SkyDefenderRun
+author: dd_06
+commands:
+  sd:
+    description: Afficher la liste des commandes.
+    usage: Syntaxe fausse ! Utiliser /sd .
+    permission: skydefender.sd
+  coords:
+    description: Afficher les coordonnées
+    usage: Syntaxe fausse ! Utiliser /coords .
+permissions:
+  skydefender.*:
+    description: Permet d'avoir toute les permissions.
+    default: op
+    children:
+      skydefender.sd: true
+      skydefender.sdstart: true
+      skydefender.sdstop: true
+      skydefender.sdset: true
+      skydefender.sdreload: true
+  skydefender.sd:
+    description: Permet d'utiliser la commande /sd
+    default: op
+  skydefender.sdstart:
+    description: Permet d'utiliser la commande /sd start
+    default: op
+  skydefender.sdstop:
+    description: Permet d'utiliser la commande /sd stop
+    default: op
+  skydefender.sdset:
+    description: Permet d'utiliser les commandes de modifications du skydefender
+    default: op
+  skydefender.sdreload:
+    description: Permet d'utiliser la commande /sd reload
+    default: op
+  skydefender.sdpause:
+    description: Permet de mettre en pause le SkyDefender
+    default: op

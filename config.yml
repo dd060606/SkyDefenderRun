@@ -1,0 +1,56 @@
+skydefendersave:
+  spawn:
+    world: world
+    x: 0
+    y: 100
+    z: 0
+  defspawn:
+    world: world
+    x: 0
+    y: 100
+    z: 0
+  attspawn:
+    world: world
+    x: 0
+    y: 100
+    z: 0
+  banner:
+    world: world
+    x: 0
+    y: 100
+    z: 0
+  tp1:
+    world: world
+    x: 0
+    y: 100
+    z: 0
+  tp2:
+    world: world
+    x: 0
+    y: 100
+    z: 0
+skydefenderconfig:
+  ingameconfig:
+    #Minutes avant le prochain jour (en minutes)
+    minutesbeforenextday: 20
+    #Jours avant le pvp
+    daysbeforepvp: 2
+    dayscoordsmessage: 5
+    daysbeforeassault: 3
+    minutesbannercooldown: 10
+    teams:
+      defenseurs:
+        maxplayers: 4
+      attaquants:
+        maxplayers: 12
+
+  autostart:
+    enabled: false
+  starting:
+    minplayers: 1
+    maxplayers: 16
+    cooldown: 15
+  teamchooser:
+    enabled: true
+  
+  
