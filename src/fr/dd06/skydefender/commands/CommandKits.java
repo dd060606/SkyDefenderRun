@@ -31,7 +31,7 @@ public class CommandKits implements CommandExecutor {
                 if (main.getConfig().getConfigurationSection("skydefenderconfig.ingameconfig.kits")
                         .getBoolean("enabled")) {
 
-                    if (SkyDefenderRun.getGamestarted()) {
+                    if (main.getGame().isGameStarted()) {
 
                         if (Kit.hasKit(player)) {
                             player.sendMessage("§cVous avez déjà un kit !");
@@ -39,7 +39,7 @@ public class CommandKits implements CommandExecutor {
 
                         }
 
-                        if (main.spectateurs.contains(player.getUniqueId())) {
+                        if (main.getGame().spectators.contains(player.getUniqueId())) {
                             player.sendMessage("§cVous ne pouvez pas recevoir de kit en tant que spectateur !");
                             return true;
 

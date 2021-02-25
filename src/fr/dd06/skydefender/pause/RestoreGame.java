@@ -3,12 +3,13 @@ package fr.dd06.skydefender.pause;
 import fr.dd06.skydefender.SkyDefenderRun;
 
 import fr.dd06.skydefender.GameTime;
-import fr.dd06.skydefender.event.EventSkyDefender;
 import fr.dd06.skydefender.game.BannerAttack;
 import fr.dd06.skydefender.kits.Kit;
 import fr.dd06.skydefender.scoreboards.CustomScoreBoard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.WorldBorder;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -24,6 +25,11 @@ public class RestoreGame {
 		SaveConfig.reloadSaveConfig();
 		FileConfiguration saveConfig = SaveConfig.getSaveConfig();
 
+
+		main.getGame().setBorderActivated(saveConfig.getBoolean("save.border.enabled"));
+		World world = Bukkit.getServer().getWorld(main.getConfig().getString("skydefendersave.spawn.world"));
+		WorldBorder worldBorder = world.getWorldBorder();
+		worldBorder.setSize(saveConfig.getDouble("save.border.value"));
 		GameTime time = new GameTime(main);
 		time.setTime(saveConfig.getInt("save.time.days"), saveConfig.getInt("save.time.minutes"),
 				saveConfig.getInt("save.time.secondes"));
@@ -39,70 +45,76 @@ public class RestoreGame {
 
 
 
-		SkyDefenderRun.setGamestarted(true);
-		main.setPaused(false);
+		main.getGame().setGameStarted(true);
+		main.getGame().setPaused(false);
 		for (String strUUID : saveConfig.getConfigurationSection("save.players").getKeys(false)) {
 			UUID uuid = UUID.fromString(strUUID);
 			Player player = Bukkit.getPlayer(uuid);
 
-			if(EventSkyDefender.kills.containsKey(uuid)) {
-				EventSkyDefender.kills.remove(uuid);
+			if(main.getGame().kills.containsKey(uuid)) {
+				main.getGame().kills.remove(uuid);
 			}
-			if(main.players.contains(uuid)) {
-				main.players.remove(uuid);
+			if(main.getGame().players.contains(uuid)) {
+				main.getGame().players.remove(uuid);
 			}
-			if(main.defenseurs.contains(uuid)) {
-				main.defenseurs.remove(uuid);
+			if(main.getGame().defenders.contains(uuid)) {
+				main.getGame().defenders.remove(uuid);
 			}
-			if(main.attaquants.contains(uuid)) {
-				main.attaquants.remove(uuid);
+			if(main.getGame().attackers.contains(uuid)) {
+				main.getGame().attackers.remove(uuid);
 			}
-			main.players.add(uuid);
+
 			if (saveConfig.getBoolean("save.players." + uuid + ".defenseurs") == true) {
-				if(!main.defenseurs.contains(uuid)) {
-					main.defenseurs.add(uuid);
+				if(!main.getGame().defenders.contains(uuid)) {
+					main.getGame().defenders.add(uuid);
+					main.getGame().players.add(uuid);
 
 				}
 				player.setPlayerListName(ChatColor.AQUA +"[Défenseur] " +  player.getName());
 
 			} else if (saveConfig.getBoolean("save.players." +uuid + ".attaquants") == true) {
-				if(!main.attaquants.contains(uuid)) {
-					main.attaquants.add(uuid);
+				if(!main.getGame().attackers.contains(uuid)) {
+					main.getGame().attackers.add(uuid);
+					main.getGame().players.add(uuid);
 				}
 				player.setPlayerListName(ChatColor.RED +"[Attaquant] " +  player.getName());
 
 
 			}
-			EventSkyDefender.kills.put(uuid, saveConfig.getInt("save.players." + uuid+".kills"));
+			main.getGame().kills.put(uuid, saveConfig.getInt("save.players." + uuid+".kills"));
 			if(saveConfig.getString("save.players."+uuid+".kit") != null) {
-				Kit.selectKit(Bukkit.getPlayer(uuid), Kit.getKitFromId(saveConfig.getString("save.players."+uuid+".kit")));
+
+				if(!saveConfig.getString("save.players."+uuid+".kit").equals("none")) {
+					Kit.selectKit(Bukkit.getPlayer(uuid), Kit.getKitFromId(saveConfig.getString("save.players."+uuid+".kit")));
+					Kit.addEffectsToPlayer(player);
+				}
+
 
 			}
-			Kit.addEffectsToPlayer(player);
 
 
 
-			CustomScoreBoard oldscoreboard = main.boards.get(uuid);
+			CustomScoreBoard oldscoreboard = main.getGame().boards.get(uuid);
 			if(oldscoreboard != null) {
 				oldscoreboard.destroy();
 			}
-			if(main.boards.containsKey(uuid)) {
-				main.boards.remove(uuid);
+			if(main.getGame().boards.containsKey(uuid)) {
+				main.getGame().boards.remove(uuid);
 			}
 
 
 			CustomScoreBoard scoreboard = new CustomScoreBoard(player, "§bSkyDefender");
 			scoreboard.create();
-			main.boards.put(player.getUniqueId(), scoreboard);
-			main.updateScoreboards(player.getUniqueId());
+			main.getGame().boards.put(player.getUniqueId(), scoreboard);
+			main.getGame().updateScoreboards(player.getUniqueId());
 			
 
 		}
-		if(saveConfig.getInt("save.time.days") >= SkyDefenderRun.getInstance().getDaysbeforepvp()) {
-			SkyDefenderRun.setPvp(true);
+		if(saveConfig.getInt("save.time.days") >= main.getGame().getDaysBeforePvp()) {
+			main.getGame().setPvp(true);
 		}
-		if(saveConfig.getInt("save.time.days") >= SkyDefenderRun.getInstance().getDaysBeforeAssault()) {
-			SkyDefenderRun.setAssault(true);
+		if(saveConfig.getInt("save.time.days") >= main.getGame().getDaysBeforeAssault()) {
+			main.getGame().setAssaultEnabled(true);
 		}
 
 		SaveConfig.saveSaveConfig();

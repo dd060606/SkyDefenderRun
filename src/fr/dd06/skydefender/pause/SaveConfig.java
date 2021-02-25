@@ -45,6 +45,12 @@ public class SaveConfig {
 				writer.write("    minutes: 0");
 				writer.newLine();
 				writer.write("    secondes: 0");
+				writer.newLine();
+				writer.write("  border:");
+				writer.newLine();
+				writer.write("    started: false");
+				writer.newLine();
+				writer.write("    value: 1000");
 				writer.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

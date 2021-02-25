@@ -36,7 +36,7 @@ public class BannerAttack extends BukkitRunnable {
             secondes = 0;
             minutes++;
         }
-        if(minutes == SkyDefenderRun.getInstance().getMinutesBannerCooldown()) {
+        if(minutes == main.getGame().getMinutesBannerCooldown()) {
             this.cancel();
         }
 
@@ -44,7 +44,7 @@ public class BannerAttack extends BukkitRunnable {
 
 
 
-        if (main.isPaused() == true) {
+        if (main.getGame().isPaused()) {
             this.cancel();
         }
     }
@@ -52,7 +52,7 @@ public class BannerAttack extends BukkitRunnable {
     public void startAttack() {
         attacking = true;
 
-        Bukkit.broadcastMessage("§e[SkyDefenderRun] : §cLe château est attaqué, les défenseurs ont " + SkyDefenderRun.getInstance().getMinutesBannerCooldown() +
+        Bukkit.broadcastMessage("§e[SkyDefenderRun] : §cLe château est attaqué, les défenseurs ont " + main.getGame().getMinutesBannerCooldown()+
                 " minutes pour défendre leur bannière !");
 
         this.runTaskTimer(main, 0, 20);

@@ -12,14 +12,14 @@ public class SkyDefenderEnd {
 		this.main = main;
 	}
 	public void winTheGame(Player player) {
-		if(main.defenseurs.contains(player.getUniqueId())) {
+		if(main.getGame().defenders.contains(player.getUniqueId())) {
 			Bukkit.broadcastMessage("§b[SkyDefenderRun] : Les défenseurs ont gagnés la partie !");
 			for(Player allplayers : Bukkit.getOnlinePlayers()) {
 				allplayers.sendTitle("§bVictoire des défenseurs !", "");
 				allplayers.playSound(allplayers.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10, 5);
 			}
 		}
-		else if(main.attaquants.contains(player.getUniqueId())) {
+		else if(main.getGame().attackers.contains(player.getUniqueId())) {
 			Bukkit.broadcastMessage("§b[SkyDefenderRun] : "+player.getName()+" a gagné(e) la partie !");
 			for(Player allplayers : Bukkit.getOnlinePlayers()) {
 				allplayers.sendTitle("§bVictoire de "+player.getName()+" !", "");
@@ -27,7 +27,7 @@ public class SkyDefenderEnd {
 				
 			}
 		}
-		SkyDefenderRun.setGamestarted(false);
+		main.getGame().setGameStarted(false);
 		for(Player allplayers : Bukkit.getOnlinePlayers()) {
 			allplayers.getInventory().clear();
 			

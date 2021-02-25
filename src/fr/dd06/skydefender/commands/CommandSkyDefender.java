@@ -89,24 +89,24 @@ public class CommandSkyDefender implements CommandExecutor, Listener {
 
 					if (args[0].equalsIgnoreCase("start")) {
 						if (p.hasPermission("fr.dd06.skydefender.sdstart") || p.hasPermission("fr.dd06.skydefender.*")) {
-							if (SkyDefenderRun.getGamestarted() == false) {
+							if (!main.getGame().isGameStarted()) {
 								exeinstance = this;
 								if (Bukkit.getOnlinePlayers().size() >= main.getConfig()
 										.getInt("skydefenderconfig.starting.minplayers")) {
 									Bukkit.broadcastMessage(
 											"§e[SkyDefenderRun] : §bUn SkyDefender va bientôt commencer !");
-									main.setPaused(false);
+									main.getGame().setPaused(false);
 
 									for (Player allplayers : Bukkit.getOnlinePlayers()) {
 										UUID uuid = allplayers.getUniqueId();
 
-										CustomScoreBoard oldscoreboard = main.boards.get(uuid);
+										CustomScoreBoard oldscoreboard = main.getGame().boards.get(uuid);
 										if(oldscoreboard != null) {
 											oldscoreboard.destroy();
 
 										}
-										if(main.boards.containsKey(uuid)) {
-											main.boards.remove(uuid);
+										if(main.getGame().boards.containsKey(uuid)) {
+											main.getGame().boards.remove(uuid);
 										}
 
 									}
@@ -127,7 +127,7 @@ public class CommandSkyDefender implements CommandExecutor, Listener {
 					}
 					if (args[0].equalsIgnoreCase("stop")) {
 						if (p.hasPermission("fr.dd06.skydefender.sdstop") || p.hasPermission("fr.dd06.skydefender.*")) {
-							if (SkyDefenderRun.getGamestarted() == true) {
+							if (main.getGame().isGameStarted()) {
 
 								Bukkit.broadcastMessage("§e[SkyDefenderRun] : §bLe SkyDefender vient de s'arrêter !");
 								for (Player allplayer : Bukkit.getServer().getOnlinePlayers()) {
@@ -149,7 +149,7 @@ public class CommandSkyDefender implements CommandExecutor, Listener {
 									allplayer.setHealth(20);
 
 									if (main.getConfig().getConfigurationSection("skydefenderconfig.teamchooser")
-											.getBoolean("enabled") == true) {
+											.getBoolean("enabled")) {
 
 										teamchooser.setItemMeta(teamchoosermeta);
 
@@ -183,8 +183,8 @@ public class CommandSkyDefender implements CommandExecutor, Listener {
 								double zTP2 = main.getConfig().getDouble("skydefendersave.tp2.z");
 								Location TP2Loc = new Location(worldTP2, xTP2, yTP2, zTP2);
 								TP2Loc.getBlock().setType(Material.AIR);
-								SkyDefenderRun.setGamestarted(false);
-								main.setPaused(false);
+								main.getGame().setGameStarted(false);
+								main.getGame().setPaused(false);
 
 								Bukkit.reload();
 								main.reloadConfig();
@@ -296,13 +296,13 @@ public class CommandSkyDefender implements CommandExecutor, Listener {
 					if (args[0].equalsIgnoreCase("pause")) {
 						if (sender.hasPermission(new Permission("fr.dd06.skydefender.sdpause"))) {
 							SaveConfig.reloadSaveConfig();
-							if (main.isPaused() == false) {
-								if (SkyDefenderRun.getGamestarted() == true) {
+							if (!main.getGame().isPaused()) {
+								if (main.getGame().isGameStarted()) {
 									Bukkit.broadcastMessage(
 											"§b[SkyDefenderRun] : §a Sauvegarde de la partie de SkyDefender");
 									SaveGame saveGame = new SaveGame(main);
 									saveGame.saveGame();
-									main.setPaused(true);
+									main.getGame().setPaused(true);
 
 									Bukkit.broadcastMessage("§b[SkyDefenderRun] : §bLe jeu est en pause !");
 								} else {
@@ -312,7 +312,7 @@ public class CommandSkyDefender implements CommandExecutor, Listener {
 
 								Bukkit.broadcastMessage(
 										"§b[SkyDefenderRun] : §aRécupération de la sauvegarde de la partie de SkyDefenderRun");
-								main.setPaused(false);
+								main.getGame().setPaused(false);
 								RestoreGame restoreGame = new RestoreGame(main);
 								restoreGame.restoreGame();
 

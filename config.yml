@@ -31,9 +31,7 @@ skydefendersave:
     z: 0
 skydefenderconfig:
   ingameconfig:
-    #Minutes avant le prochain jour (en minutes)
     minutesbeforenextday: 20
-    #Jours avant le pvp
     daysbeforepvp: 2
     dayscoordsmessage: 5
     daysbeforeassault: 3
@@ -45,7 +43,13 @@ skydefenderconfig:
         maxplayers: 4
       attaquants:
         maxplayers: 12
-
+        spawnrange: 50
+    border:
+      enabled: true
+      daysbeforeborder: 4
+      max: 1000
+      min: 300
+      speed: 0.4
   autostart:
     enabled: false
   starting:

@@ -1,6 +1,8 @@
 package fr.dd06.skydefender;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -31,17 +33,17 @@ public class GameTime extends BukkitRunnable {
 			secondes = 0;
 			minutes++;
 		}
-		if (minutes == SkyDefenderRun.getInstance().getMinutesbeforenextday()) {
+		if (minutes == main.getGame().getMinutesBeforeNextDay()) {
 			secondes = 0;
 			minutes = 0;
 			jour++;
 			Bukkit.broadcastMessage("§e[SkyDefenderRun] : §aDébut du jour " + jour + " !");
 
 
-			if(jour >= SkyDefenderRun.getInstance().getDaysCoordsMessage()) {
+			if(jour >= main.getGame().getDaysCoordsMessage()) {
 				Bukkit.broadcastMessage("§e[SkyDefenderRun] : §aCoordonnées des joueurs : \n");
 
-				for(UUID uuid : main.players) {
+				for(UUID uuid : main.getGame().players) {
 
 					Player player = Bukkit.getPlayer(uuid);
 
@@ -56,32 +58,45 @@ public class GameTime extends BukkitRunnable {
 
 		if(jour == 1 && minutes == 0 && secondes == 10) {
 			Bukkit.broadcastMessage("§e[SkyDefenderRun] : §aVous pouvez choisir un kit avec la commande /kits !");
-
+			main.getGame().setGodTime(false);
 		}
-		if (jour == SkyDefenderRun.getInstance().getDaysbeforepvp() && !SkyDefenderRun.getPvp()) {
-			SkyDefenderRun.setPvp(true);
+		if (jour == main.getGame().getDaysBeforePvp() && !main.getGame().isPvpEnabled()) {
+			main.getGame().setPvp(true);
 			Bukkit.broadcastMessage("§e[SkyDefenderRun] : §aLe PvP est activé !");
 
 		}
 
-		if (jour == SkyDefenderRun.getInstance().getDaysBeforeAssault() && !SkyDefenderRun.isAssaultEnabled()) {
-			SkyDefenderRun.setAssault(true);
+		if (jour == main.getGame().getDaysBeforeAssault() && !main.getGame().isAssaultEnabled()) {
+			main.getGame().setAssaultEnabled(true);
 			Bukkit.broadcastMessage("§e[SkyDefenderRun] : §aL'attaque de château est activée !");
 
 		}
-
+		if(jour == main.getGame().getDaysBeforeBorder() && !main.getGame().isBorderActivated() && main.getConfig().getBoolean("skydefenderconfig.ingameconfig.border.enabled")) {
+			main.getGame().setBorderActivated(true);
+			Bukkit.broadcastMessage("§e[SkyDefenderRun] : §aLa bordure commence à se rétrécir !");
+		}
 
 
 		for (Player allplayers : Bukkit.getOnlinePlayers()) {
-			main.updateScoreboards(allplayers.getUniqueId());
+			main.getGame().updateScoreboards(allplayers.getUniqueId());
 
 		}
-		for (UUID uuid : main.spectateurs) {
-			main.updateSpectatorsBoards(uuid);
+		for (UUID uuid : main.getGame().spectators) {
+			main.getGame().updateSpectatorsBoards(uuid);
 		}
+
+		if(main.getGame().isBorderActivated()) {
+			World world = Bukkit.getServer().getWorld(main.getConfig().getString("skydefendersave.spawn.world"));
+			WorldBorder worldBorder = world.getWorldBorder();
+
+			if(worldBorder.getSize() >= main.getConfig().getDouble("skydefenderconfig.ingameconfig.border.min")) {
+				worldBorder.setSize(worldBorder.getSize() - main.getConfig().getDouble("skydefenderconfig.ingameconfig.border.speed"));
+			}
+		}
+
 		secondes++;
 
-		if (main.isPaused() == true) {
+		if (main.getGame().isPaused()) {
 			this.cancel();
 		}
 

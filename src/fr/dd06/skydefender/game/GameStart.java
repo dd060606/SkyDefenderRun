@@ -11,6 +11,8 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
+import java.util.Random;
+
 public class GameStart {
 	
 	public static void gameStart(SkyDefenderRun main) {
@@ -30,10 +32,10 @@ public class GameStart {
 
 			allplayers.playSound(allplayers.getLocation(), Sound.ENTITY_WITHER_SPAWN, 10, 5);
 
-			if (!SkyDefenderRun.getInstance().players.contains(allplayers.getUniqueId()))
-				SkyDefenderRun.getInstance().players.add(allplayers.getUniqueId());
+			if (!main.getGame().players.contains(allplayers.getUniqueId()))
+				main.getGame().players.add(allplayers.getUniqueId());
 
-			if (main.attaquants.contains(allplayers.getUniqueId())) {
+			if (main.getGame().attackers.contains(allplayers.getUniqueId())) {
 				main.reloadConfig();
 				World w = Bukkit.getServer().getWorld(main.getConfig().getString("skydefendersave.attspawn.world"));
 				double x = main.getConfig().getDouble("skydefendersave.attspawn.x");
@@ -46,7 +48,7 @@ public class GameStart {
 
 				
 				
-			} else if (main.defenseurs.contains(allplayers.getUniqueId())) {
+			} else if (main.getGame().defenders.contains(allplayers.getUniqueId())) {
 				main.reloadConfig();
 				World w = Bukkit.getServer().getWorld(main.getConfig().getString("skydefendersave.defspawn.world"));
 				double x = main.getConfig().getDouble("skydefendersave.defspawn.x");
@@ -57,10 +59,10 @@ public class GameStart {
 				allplayers.setPlayerListName(ChatColor.AQUA +"[Défenseur] " +  allplayers.getName());
 
 				allplayers.sendMessage("§aVous êtes un défenseur !");
-			} else if (main.spectateurs.contains(allplayers.getUniqueId())) {
+			} else if (main.getGame().spectators.contains(allplayers.getUniqueId())) {
 				allplayers.getInventory().clear();
-				if(main.players.contains(allplayers.getUniqueId())) {
-					main.players.remove(allplayers.getUniqueId());
+				if(main.getGame().players.contains(allplayers.getUniqueId())) {
+					main.getGame().players.remove(allplayers.getUniqueId());
 				}
 				
 				allplayers.setGameMode(GameMode.SPECTATOR);
@@ -78,22 +80,26 @@ public class GameStart {
 			}
 
 			else {
-				if (main.defenseurs.size() >= main.getConfig()
+				if (main.getGame().defenders.size() >= main.getConfig()
 						.getInt("skydefenderconfig.ingameconfig.teams.defenseurs.maxplayers")) {
-					
-					main.attaquants.add(allplayers.getUniqueId());
+
+					main.getGame().attackers.add(allplayers.getUniqueId());
 					main.reloadConfig();
 					World w = Bukkit.getServer().getWorld(main.getConfig().getString("skydefendersave.attspawn.world"));
 					double x = main.getConfig().getDouble("skydefendersave.attspawn.x");
-					double y = main.getConfig().getDouble("skydefendersave.attspawn.y");
+					//double y = main.getConfig().getDouble("skydefendersave.attspawn.y");
 					double z = main.getConfig().getDouble("skydefendersave.attspawn.z");
-					allplayers.teleport(new Location(w, x, y, z));
+					int range = main.getConfig().getInt("skydefenderconfig.ingameconfig.teams.attaquants.spawnrange");
+
+					Random random = new Random();
+					int result = random.nextInt(range);
+					allplayers.teleport(new Location(w, x + result, 150, z + result));
 
 					allplayers.setPlayerListName(ChatColor.RED +"[Attaquant] " +  allplayers.getName());
 					allplayers.sendMessage("§aVous êtes un attaquant !");
 
 				} else {
-					main.defenseurs.add(allplayers.getUniqueId());
+					main.getGame().defenders.add(allplayers.getUniqueId());
 					main.reloadConfig();
 					World w = Bukkit.getServer().getWorld(main.getConfig().getString("skydefendersave.defspawn.world"));
 					double x = main.getConfig().getDouble("skydefendersave.defspawn.x");
@@ -133,27 +139,35 @@ public class GameStart {
 			Location loctp2 = new Location(worldtp2, xtp2, ytp2, ztp2);
 			loctp2.getBlock().setType(Material.REDSTONE_BLOCK);
 
+			if(main.getConfig().getBoolean("skydefenderconfig.ingameconfig.border.enabled")) {
+				World world = Bukkit.getServer().getWorld(main.getConfig().getString("skydefendersave.spawn.world"));
+				WorldBorder worldBorder = world.getWorldBorder();
+				worldBorder.setCenter(0,0);
+				worldBorder.setSize(main.getConfig().getDouble("skydefenderconfig.ingameconfig.border.max"));
+				worldBorder.setDamageAmount(5);
+
+			}
 
 
-			SkyDefenderRun.setGamestarted(true);
+			main.getGame().setGameStarted(true);
+			main.getGame().setGodTime(true);
 
 
-
-			if(!main.spectateurs.contains(allplayers.getUniqueId())) {
+			if(!main.getGame().spectators.contains(allplayers.getUniqueId())) {
 			CustomScoreBoard scoreboard = new CustomScoreBoard(allplayers, "§bSkyDefender");
 			scoreboard.destroy();
 			scoreboard.create();
 			
-			main.boards.put(allplayers.getUniqueId(), scoreboard);
-			main.updateScoreboards(allplayers.getUniqueId());
+			main.getGame().boards.put(allplayers.getUniqueId(), scoreboard);
+			main.getGame().updateScoreboards(allplayers.getUniqueId());
 			}
 			else {
 				CustomScoreBoard specboard = new CustomScoreBoard(allplayers, "§bSkyDefender");
 				specboard.destroy();
 				specboard.create();
 				
-				main.specboards.put(allplayers.getUniqueId(), specboard);
-				main.updateSpectatorsBoards(allplayers.getUniqueId());
+				main.getGame().specboards.put(allplayers.getUniqueId(), specboard);
+				main.getGame().updateSpectatorsBoards(allplayers.getUniqueId());
 			}
 			
 
