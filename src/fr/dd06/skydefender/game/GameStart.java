@@ -6,7 +6,10 @@ import fr.dd06.skydefender.GameTime;
 import fr.dd06.skydefender.kits.Kit;
 import fr.dd06.skydefender.scoreboards.CustomScoreBoard;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 
 public class GameStart {
 	
@@ -17,8 +20,14 @@ public class GameStart {
 		
 			allplayers.getInventory().clear();
 			allplayers.setGameMode(GameMode.SURVIVAL);
+			AttributeInstance attribute = allplayers.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+			attribute.setBaseValue(20.0D);
 			allplayers.setHealth(20);
 			allplayers.setFoodLevel(20);
+			for(PotionEffect effect : allplayers.getActivePotionEffects()) {
+				allplayers.removePotionEffect(effect.getType());
+			}
+
 			allplayers.playSound(allplayers.getLocation(), Sound.ENTITY_WITHER_SPAWN, 10, 5);
 
 			if (!SkyDefenderRun.getInstance().players.contains(allplayers.getUniqueId()))

@@ -78,6 +78,7 @@ public class RestoreGame {
 				Kit.selectKit(Bukkit.getPlayer(uuid), Kit.getKitFromId(saveConfig.getString("save.players."+uuid+".kit")));
 
 			}
+			Kit.addEffectsToPlayer(player);
 
 
 

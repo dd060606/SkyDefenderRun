@@ -1,6 +1,8 @@
 package fr.dd06.skydefender.kits;
 
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -9,6 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.*;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -207,6 +210,38 @@ public enum Kit {
                     player.getInventory().addItem(getEnchantedBook(Enchantment.FIRE_ASPECT, 1));
                     return;
                 }
+            }
+        }
+    }
+
+    public static void addEffectsToPlayer(Player player) {
+        if(hasKit(player)) {
+            Kit kit = getPlayerKit(player);
+
+            if(kit.getId() == "berserker") {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE,0, true, false));
+            }
+            else if(kit.getId() == "assassin") {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE,1, true, false));
+
+            }
+            else if(kit.getId() == "tank") {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE,0, true, false));
+
+            }
+            else if(kit.getId() == "archer") {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE,0, true, false));
+
+            }
+            else if(kit.getId() == "druide") {
+                AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+                attribute.setBaseValue(30.0D);
+                player.setHealth(30.0D);
+
+            }
+            else if(kit.getId() == "elementaliste") {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE,0, true, false));
+
             }
         }
     }

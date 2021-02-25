@@ -53,6 +53,11 @@ public class GameTime extends BukkitRunnable {
 
 
 		}
+
+		if(jour == 1 && minutes == 0 && secondes == 10) {
+			Bukkit.broadcastMessage("§e[SkyDefenderRun] : §aVous pouvez choisir un kit avec la commande /kits !");
+
+		}
 		if (jour == SkyDefenderRun.getInstance().getDaysbeforepvp() && !SkyDefenderRun.getPvp()) {
 			SkyDefenderRun.setPvp(true);
 			Bukkit.broadcastMessage("§e[SkyDefenderRun] : §aLe PvP est activé !");
