@@ -134,7 +134,7 @@ public class CommandSkyDefender implements CommandExecutor, Listener {
 									allplayer.setGameMode(GameMode.ADVENTURE);
 
 									allplayer.getInventory().clear();
-									ItemStack teamchooser = new ItemStack(Material.BANNER, 1, (byte) 15);
+									ItemStack teamchooser = new ItemStack(Material.WHITE_BANNER, 1);
 									ItemMeta teamchoosermeta = teamchooser.getItemMeta();
 									teamchoosermeta.addEnchant(Enchantment.DAMAGE_ALL, 0, true);
 									teamchoosermeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);

@@ -1,7 +1,8 @@
 package fr.dd06.skydefender.scoreboards;
 
-import net.minecraft.server.v1_12_R1.*;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+
+import net.minecraft.server.v1_10_R1.*;
+import org.bukkit.craftbukkit.v1_10_R1.entity.*;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;

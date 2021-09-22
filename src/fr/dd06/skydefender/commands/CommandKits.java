@@ -60,7 +60,7 @@ public class CommandKits implements CommandExecutor {
                                 invKits.setItem(i, Kit.getIconFromKit(Kit.TANK));
 
                             } else if (i == 13) {
-                                invKits.setItem(i, getItem(Material.WOOL, "§bRandom", (byte) 0));
+                                invKits.setItem(i, getItem(Material.WHITE_WOOL, "§bRandom"));
 
                             } else if (i == 16) {
                                 invKits.setItem(i, Kit.getIconFromKit(Kit.ARCHER));
@@ -72,7 +72,7 @@ public class CommandKits implements CommandExecutor {
                                 invKits.setItem(i, Kit.getIconFromKit(Kit.ELEMENTALISTE));
 
                             } else {
-                                invKits.setItem(i, getItem(Material.STAINED_GLASS_PANE, "", (byte) 14));
+                                invKits.setItem(i, getItem(Material.RED_STAINED_GLASS_PANE,null));
                             }
                         }
 
@@ -94,13 +94,11 @@ public class CommandKits implements CommandExecutor {
     }
 
 
-    public ItemStack getItem(Material material, String customName, byte num) {
-        ItemStack it = new ItemStack(material, 1, num);
+    public ItemStack getItem(Material material, String customName) {
+        ItemStack it = new ItemStack(material, 1);
         ItemMeta itM = it.getItemMeta();
         if (customName != null)
             itM.setDisplayName(customName);
-        it.setItemMeta(itM);
-
         it.setItemMeta(itM);
         return it;
 

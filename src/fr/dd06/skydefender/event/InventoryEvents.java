@@ -2,13 +2,12 @@ package fr.dd06.skydefender.event;
 
 import fr.dd06.skydefender.SkyDefenderRun;
 import fr.dd06.skydefender.kits.Kit;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
 
 import java.util.Random;
 
@@ -30,20 +29,17 @@ public class InventoryEvents implements Listener {
         if (current == null)
             return;
 
-        if (current.getType() == Material.BANNER && !main.getGame().isGameStarted()) {
+        if (!main.getGame().isGameStarted()) {
             e.setCancelled(true);
         }
 
-        if (inv.getName().equals("§8Choisir une équipe")) {
-            if (current.getType() == Material.WOOL && !main.getGame().isGameStarted()) {
-                e.setCancelled(true);
-            }
+        if (e.getView().getTitle().equals("§8Choisir une équipe")) {
 
-            if (current.getType() == Material.WOOL && current.getItemMeta().getDisplayName().equals("§4Fermer")) {
+            if (current.getType().equals(Material.RED_WOOL)) {
                 player.closeInventory();
                 player.updateInventory();
             }
-            if (current.getType() == Material.BANNER && current.getItemMeta().getDisplayName().equals("§9Défenseur")) {
+            if (current.getType().equals(Material.BLUE_BANNER )) {
 
                 player.closeInventory();
                 player.updateInventory();
@@ -66,7 +62,7 @@ public class InventoryEvents implements Listener {
                 player.sendMessage("§aVous avez rejoint l'équipe des §9Défenseurs !");
 
             }
-            if (current.getType() == Material.BANNER && current.getItemMeta().getDisplayName().equals("§cAttaquant")) {
+            if (current.getType().equals(Material.RED_BANNER)) {
 
                 player.closeInventory();
                 player.updateInventory();
@@ -89,7 +85,7 @@ public class InventoryEvents implements Listener {
                 player.sendMessage("§aVous avez rejoint l'équipe des §cAttaquants !");
 
             }
-            if (current.getType() == Material.BANNER && current.getItemMeta().getDisplayName().equals("§fAléatoire")) {
+            if (current.getType().equals( Material.WHITE_BANNER)) {
 
                 player.closeInventory();
                 player.updateInventory();
@@ -125,7 +121,7 @@ public class InventoryEvents implements Listener {
 
             }
 
-            if (current.getType() == Material.BANNER && current.getItemMeta().getDisplayName().equals("§5Spectateur")) {
+            if (current.getType().equals(Material.PURPLE_BANNER )) {
 
                 player.closeInventory();
                 player.updateInventory();
@@ -146,13 +142,21 @@ public class InventoryEvents implements Listener {
             }
         }
 
-        if (inv.getName().equals("§6Kits")) {
+        if (e.getView().getTitle().equals("§6Kits")) {
 
 
             for (Kit kit : Kit.values()) {
 
                 if (current.getItemMeta() != null && current.getItemMeta().getDisplayName() != null) {
-                    if (current.getItemMeta().getDisplayName().equals("§b" + kit.getName())) {
+                    if(current.getItemMeta().getDisplayName().equals("§bElémentaliste")) {
+                        Inventory invElementaliste = Bukkit.createInventory(null, 9, "§6Elémentaliste");
+                        invElementaliste.setItem(3, Kit.getIconFromKit(Kit.ELEMENTALISTE_FEU));
+                        invElementaliste.setItem(5, Kit.getIconFromKit(Kit.ELEMENTALISTE_EAU));
+                        player.openInventory(invElementaliste);
+                        player.updateInventory();
+
+                    }
+                    else if (current.getItemMeta().getDisplayName().equals("§b" + kit.getName())) {
                         if (!kit.getPlayersKit().contains(player.getUniqueId())) {
                             Kit.selectKit(player, kit);
                             player.sendMessage("§aVous avez choisi le kit " + "§b" + kit.getName() + " §a!");
@@ -187,6 +191,26 @@ public class InventoryEvents implements Listener {
             e.setCancelled(true);
 
 
+        }
+        else if (e.getView().getTitle().equals("§6Elémentaliste")) {
+            if (current.getItemMeta() != null && current.getItemMeta().getDisplayName() != null) {
+                for (Kit kit : Kit.values()) {
+                    if (current.getItemMeta().getDisplayName().equals("§b" + kit.getName())) {
+                        if (!kit.getPlayersKit().contains(player.getUniqueId())) {
+                            Kit.selectKit(player, kit);
+                            player.sendMessage("§aVous avez choisi le kit " + "§b" + kit.getName() + " §a!");
+                            Kit.giveItemsToPlayer(player);
+                            Kit.addEffectsToPlayer(player);
+                            player.closeInventory();
+                            player.updateInventory();
+
+                            break;
+
+                        }
+
+                    }
+                }
+            }
         }
     }
 }

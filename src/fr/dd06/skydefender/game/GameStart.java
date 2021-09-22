@@ -22,9 +22,10 @@ public class GameStart {
 		
 			allplayers.getInventory().clear();
 			allplayers.setGameMode(GameMode.SURVIVAL);
+
 			AttributeInstance attribute = allplayers.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-			attribute.setBaseValue(20.0D);
-			allplayers.setHealth(20);
+			attribute.setBaseValue(40.0D);
+			allplayers.setHealth(40.0D);
 			allplayers.setFoodLevel(20);
 			for(PotionEffect effect : allplayers.getActivePotionEffects()) {
 				allplayers.removePotionEffect(effect.getType());
@@ -120,7 +121,7 @@ public class GameStart {
 			double ybanner = main.getConfig().getDouble("skydefendersave.banner.y");
 			double zbanner = main.getConfig().getDouble("skydefendersave.banner.z");
 			Location locbanner = new Location(worldbanner, xbanner, ybanner, zbanner);
-			locbanner.getBlock().setType(Material.STANDING_BANNER);
+			locbanner.getBlock().setType(Material.WHITE_BANNER);
 			main.reloadConfig();
 			World worldtp1 = Bukkit.getServer().getWorld(main.getConfig().getString("skydefendersave.tp1.world"));
 			double xtp1 = main.getConfig().getDouble("skydefendersave.tp1.x");
@@ -144,7 +145,7 @@ public class GameStart {
 				WorldBorder worldBorder = world.getWorldBorder();
 				worldBorder.setCenter(0,0);
 				worldBorder.setSize(main.getConfig().getDouble("skydefenderconfig.ingameconfig.border.max"));
-				worldBorder.setDamageAmount(5);
+				worldBorder.setDamageAmount(1.5);
 
 			}
 

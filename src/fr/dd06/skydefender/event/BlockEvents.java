@@ -10,8 +10,7 @@ import fr.dd06.skydefender.scoreboards.CustomScoreBoard;
 import fr.dd06.skydefender.utils.BlockLocationChecker;
 import fr.dd06.skydefender.utils.BlockLoots;
 import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
+import org.bukkit.block.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -21,16 +20,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -58,10 +53,12 @@ public class BlockEvents implements Listener {
 
         if (!main.getGame().isGameStarted() || main.getGame().isPaused() == true) {
             Player player = event.getPlayer();
-            if (player.getInventory().getItemInHand().getType() == Material.BANNER)
+            if (player.getInventory().getItemInMainHand().getType().equals(Material.WHITE_BANNER) || player.getInventory().getItemInOffHand().getType().equals(Material.WHITE_BANNER ) ) {
                 event.setCancelled(true);
+                return;
+            }
             if (player.getGameMode().equals(GameMode.CREATIVE)) {
-                if (event.getBlock().getType() == Material.BANNER) {
+                if (event.getBlock().getType().equals(Material.WHITE_BANNER)) {
                     event.setCancelled(true);
                 }
                 event.setCancelled(false);
@@ -84,7 +81,7 @@ public class BlockEvents implements Listener {
             if (main.getGame().isPaused()) {
                 event.setCancelled(true);
             }
-            if (blockbreaked.getType().equals(Material.STANDING_BANNER)) {
+            if (blockbreaked.getType().equals(Material.WHITE_BANNER)) {
                 Location bannerLoc = new Location(
                         Bukkit.getWorld(main.getConfig().getString("skydefendersave.banner.world")),
                         main.getConfig().getDouble("skydefendersave.banner.x"),
@@ -158,17 +155,30 @@ public class BlockEvents implements Listener {
 
             }
 
-            if (blockbreaked.getType().equals(Material.LOG)) {
-                Location blockLoc = blockbreaked.getLocation();
-                World world = blockbreaked.getWorld();
-                BlockLoots.breakTree(blockbreaked);
+            int xbanner = (int) main.getConfig().getDouble("skydefendersave.banner.x");
+            int ybanner = (int) main.getConfig().getDouble("skydefendersave.banner.y");
+            int zbanner = (int) main.getConfig().getDouble("skydefendersave.banner.z");
 
+            if(blockbreaked.getX() == xbanner && blockbreaked.getY() == ybanner -1 && blockbreaked.getZ() == zbanner) {
+                event.setCancelled(true);
+            }
 
+            if((blockbreaked.getType().equals( Material.ACACIA_LOG)) || (blockbreaked.getType().equals(Material.BIRCH_LOG)) || (blockbreaked.getType().equals(Material.OAK_LOG)) || (blockbreaked.getType().equals(Material.DARK_OAK_LOG) ) || (blockbreaked.getType().equals(Material.JUNGLE_LOG)) || (blockbreaked.getType().equals(Material.SPRUCE_LOG)) )  {
+                Vector<Block> tree = getTree(blockbreaked);
+                for(Block currentTreeBlock : tree) {
+                    if( (currentTreeBlock.getType().equals(Material.ACACIA_LEAVES)) || (currentTreeBlock.getType().equals(Material.BIRCH_LEAVES)) || (currentTreeBlock.getType().equals(Material.OAK_LEAVES) ) || (currentTreeBlock.getType().equals(Material.DARK_OAK_LEAVES)) || (currentTreeBlock.getType().equals(Material.JUNGLE_LEAVES)) || (currentTreeBlock.getType().equals(Material.SPRUCE_LEAVES)) ) {
+                        Random random = new Random();
+                        if(random.nextInt(15) == 1) {
+                            currentTreeBlock.getLocation().getWorld().dropItemNaturally(currentTreeBlock.getLocation(), new ItemStack(Material.APPLE));
+                        }
+                    }
+                    currentTreeBlock.breakNaturally();
+                }
             }
             if (BlockLoots.blocks.contains(blockbreaked.getType())) {
 
                 event.setDropItems(false);
-                BlockLoots.dropLootFromBlock(blockbreaked);
+                BlockLoots.dropLootFromBlock(blockbreaked, breaker);
             }
         } else {
 
@@ -184,9 +194,98 @@ public class BlockEvents implements Listener {
     }
 
 
+    @EventHandler
+    public void onStartBreaking(BlockDamageEvent event) {
+        Player player = event.getPlayer();
+        Block block = event.getBlock();
+
+        if(main.getGame().isGameStarted()) {
+            if(block.getType().equals(Material.OBSIDIAN )) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 8 * 20, 2));
+            }
+        }
+
+    }
 
 
+    @EventHandler
+    public void onExplosion(EntityExplodeEvent  event) {
+
+        if(main.getGame().isGameStarted()) {
+            List<Block> blockListCopy = new ArrayList<Block>();
+            blockListCopy.addAll(event.blockList());
+
+            main.reloadConfig();
+            int xtp1 = (int) main.getConfig().getDouble("skydefendersave.tp1.x");
+            int ytp1 = (int) main.getConfig().getDouble("skydefendersave.tp1.y");
+            int ztp1 = (int) main.getConfig().getDouble("skydefendersave.tp1.z");
+
+            int xtp2 = (int) main.getConfig().getDouble("skydefendersave.tp2.x");
+            int ytp2 = (int) main.getConfig().getDouble("skydefendersave.tp2.y");
+            int ztp2 = (int) main.getConfig().getDouble("skydefendersave.tp2.z");
+
+            int xbanner = (int) main.getConfig().getDouble("skydefendersave.banner.x");
+            int ybanner = (int) main.getConfig().getDouble("skydefendersave.banner.y");
+            int zbanner = (int) main.getConfig().getDouble("skydefendersave.banner.z");
 
 
+            for (Block block : blockListCopy) {
+
+
+                if (block.getType().equals(Material.REDSTONE_BLOCK)) {
+                    if(block.getX() == xtp1 && block.getY() == ytp1 && block.getZ() == ztp1) {
+                        event.blockList().remove(block);
+
+                    }
+                    if(block.getX() == xtp2 && block.getY() == ytp2 && block.getZ() == ztp2) {
+                        event.blockList().remove(block);
+
+                    }
+                    if(block.getX() == xbanner && block.getY() == ybanner && block.getZ() == zbanner) {
+                        event.blockList().remove(block);
+
+                    }
+                    if(block.getX() == xbanner && block.getY() == ybanner -1 && block.getZ() == zbanner) {
+                        event.blockList().remove(block);
+                    }
+                }
+            }
+        }
+
+    }
+
+    public Vector<Block> getTree(Block startBlock) {
+        Vector<Material> allowedBlocks = new Vector<Material>();
+        allowedBlocks.add(Material.ACACIA_LOG);
+        allowedBlocks.add(Material.BIRCH_LOG);
+        allowedBlocks.add(Material.DARK_OAK_LOG);
+        allowedBlocks.add(Material.JUNGLE_LOG);
+        allowedBlocks.add(Material.OAK_LOG);
+        allowedBlocks.add(Material.SPRUCE_LOG);
+        allowedBlocks.add(Material.ACACIA_LEAVES);
+        allowedBlocks.add(Material.AZALEA_LEAVES);
+        allowedBlocks.add(Material.BIRCH_LEAVES);
+        allowedBlocks.add(Material.DARK_OAK_LEAVES);
+        allowedBlocks.add(Material.JUNGLE_LEAVES);
+        allowedBlocks.add(Material.OAK_LEAVES);
+        allowedBlocks.add(Material.SPRUCE_LEAVES);
+        return getNextBlock(startBlock, allowedBlocks);
+    }
+
+    public Vector<Block> getNextBlock(Block startBlock, Vector<Material> allowedBlocks) {
+
+        Vector<Block> blocks = new Vector<>();
+        for(int x=-2; x<4; x++) {
+            for(int y=-5; y<10; y++) {
+                for(int z=-2; z<4; z++) {
+                    Block block = startBlock.getLocation().add(x, y, z).getBlock();
+                    if(block!=null && !blocks.contains(block) && allowedBlocks.contains(block.getType())) {
+                        blocks.add(block);
+                    }
+                }
+            }
+        }
+        return blocks;
+    }
 
 }

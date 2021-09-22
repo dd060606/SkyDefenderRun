@@ -103,7 +103,7 @@ public class PlayerEvents implements Listener {
 
                 if (main.getConfig().getConfigurationSection("skydefenderconfig.teamchooser")
                         .getBoolean("enabled")) {
-                    ItemStack teamchooser = new ItemStack(Material.BANNER, 1, (byte) 15);
+                    ItemStack teamchooser = new ItemStack(Material.WHITE_BANNER, 1);
                     ItemMeta teamchoosermeta = teamchooser.getItemMeta();
                     teamchoosermeta.addEnchant(Enchantment.DAMAGE_ALL, 0, true);
                     teamchoosermeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -233,16 +233,16 @@ public class PlayerEvents implements Listener {
                         .getBoolean("enabled")) {
 
 
-                    if (it.getType() == Material.BANNER && it.hasItemMeta()
+                    if (it.getType() == Material.WHITE_BANNER && it.hasItemMeta()
                             && it.getItemMeta().getDisplayName().equals("§eChoisir une équipe")) {
                         if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
                             Inventory teamchoosergui = Bukkit.createInventory(null, 18, "§8Choisir une équipe");
 
-                            teamchoosergui.setItem(3, getItem(Material.BANNER, "§9Défenseur", (byte) 4));
-                            teamchoosergui.setItem(4, getItem(Material.BANNER, "§cAttaquant", (byte) 1));
-                            teamchoosergui.setItem(5, getItem(Material.BANNER, "§fAléatoire", (byte) 15));
-                            teamchoosergui.setItem(13, getItem(Material.WOOL, "§4Fermer", (byte) 14));
-                            teamchoosergui.setItem(8, getItem(Material.BANNER, "§5Spectateur", (byte) 5));
+                            teamchoosergui.setItem(3, getItem(Material.BLUE_BANNER, "§9Défenseur"));
+                            teamchoosergui.setItem(4, getItem(Material.RED_BANNER, "§cAttaquant"));
+                            teamchoosergui.setItem(5, getItem(Material.WHITE_BANNER, "§fAléatoire"));
+                            teamchoosergui.setItem(13, getItem(Material.RED_WOOL, "§4Fermer"));
+                            teamchoosergui.setItem(8, getItem(Material.PURPLE_BANNER, "§5Spectateur"));
 
                             player.openInventory(teamchoosergui);
 
@@ -346,7 +346,7 @@ public class PlayerEvents implements Listener {
             Player player = e.getPlayer();
             player.getInventory().clear();
 
-            ItemStack teamchooser = new ItemStack(Material.BANNER, 1, (byte) 15);
+            ItemStack teamchooser = new ItemStack(Material.WHITE_BANNER, 1);
             ItemMeta teamchoosermeta = teamchooser.getItemMeta();
             teamchoosermeta.addEnchant(Enchantment.DAMAGE_ALL, 0, true);
             teamchoosermeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -434,8 +434,8 @@ public class PlayerEvents implements Listener {
         }.runTaskLater(main, 2L);
     }
 
-    public ItemStack getItem(Material material, String customName, byte num) {
-        ItemStack it = new ItemStack(material, 1, num);
+    public ItemStack getItem(Material material, String customName) {
+        ItemStack it = new ItemStack(material, 1);
         ItemMeta itM = it.getItemMeta();
         if (customName != null)
             itM.setDisplayName(customName);

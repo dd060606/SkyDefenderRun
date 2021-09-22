@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
+import org.bukkit.attribute.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -26,7 +27,7 @@ public class RestoreGame {
 		FileConfiguration saveConfig = SaveConfig.getSaveConfig();
 
 
-		main.getGame().setBorderActivated(saveConfig.getBoolean("save.border.enabled"));
+		main.getGame().setBorderActivated(saveConfig.getBoolean("save.border.started"));
 		World world = Bukkit.getServer().getWorld(main.getConfig().getString("skydefendersave.spawn.world"));
 		WorldBorder worldBorder = world.getWorldBorder();
 		worldBorder.setSize(saveConfig.getDouble("save.border.value"));
@@ -64,7 +65,7 @@ public class RestoreGame {
 				main.getGame().attackers.remove(uuid);
 			}
 
-			if (saveConfig.getBoolean("save.players." + uuid + ".defenseurs") == true) {
+			if (saveConfig.getBoolean("save.players." + uuid + ".defenseurs")) {
 				if(!main.getGame().defenders.contains(uuid)) {
 					main.getGame().defenders.add(uuid);
 					main.getGame().players.add(uuid);
@@ -72,7 +73,7 @@ public class RestoreGame {
 				}
 				player.setPlayerListName(ChatColor.AQUA +"[Défenseur] " +  player.getName());
 
-			} else if (saveConfig.getBoolean("save.players." +uuid + ".attaquants") == true) {
+			} else if (saveConfig.getBoolean("save.players." + uuid + ".attaquants")) {
 				if(!main.getGame().attackers.contains(uuid)) {
 					main.getGame().attackers.add(uuid);
 					main.getGame().players.add(uuid);
@@ -81,16 +82,21 @@ public class RestoreGame {
 
 
 			}
+
+			AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+			attribute.setBaseValue(40.0D);
+			player.setHealth(40.0D);
+
 			main.getGame().kills.put(uuid, saveConfig.getInt("save.players." + uuid+".kills"));
 			if(saveConfig.getString("save.players."+uuid+".kit") != null) {
 
-				if(!saveConfig.getString("save.players."+uuid+".kit").equals("none")) {
-					Kit.selectKit(Bukkit.getPlayer(uuid), Kit.getKitFromId(saveConfig.getString("save.players."+uuid+".kit")));
+				if (!saveConfig.getString("save.players." + uuid + ".kit").equals("none")) {
+					Kit.selectKit(Bukkit.getPlayer(uuid), Kit.getKitFromId(saveConfig.getString("save.players." + uuid + ".kit")));
 					Kit.addEffectsToPlayer(player);
 				}
 
-
 			}
+
 
 
 
