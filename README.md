@@ -1,2 +1,2 @@
 # SkyDefenderRun
-A fast SkyDefender minecraft plugin
+A fast SkyDefender Minecraft plugin for Minecraft 1.17.1
