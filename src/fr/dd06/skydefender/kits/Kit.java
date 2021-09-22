@@ -25,9 +25,8 @@ public enum Kit {
     TANK("tank","Tank"),
     ARCHER("archer","Archer"),
     DRUIDE("druide", "Druide"),
-    ELEMENTALISTE("elementaliste", "Elémentaliste"),
-    ELEMENTALISTE_EAU("elementaliste_eau", "Elémentaliste Eau"),
-    ELEMENTALISTE_FEU("elementaliste_feu", "Elémentaliste Feu");
+    ELEMENTALISTE("elementaliste", "Elémentaliste");
+
     private String name;
     private String id;
     private ArrayList<UUID> playersKit = new ArrayList<>();
@@ -72,45 +71,29 @@ public enum Kit {
     public static void selectRandomKit(Player player) {
 
         Random random = new Random();
-        int result = random.nextInt(7);
-        if(result == 0) {
-            selectKit(player, Kit.BERSERKER);
-            return;
+        int result = random.nextInt(6);
+        switch (result) {
+            case 1:
+                selectKit(player, Kit.ASSASSIN);
+                break;
+            case 2:
+                selectKit(player, Kit.TANK);
+                break;
+            case 3:
+                selectKit(player, Kit.DRUIDE);
+                break;
+            case 4:
+                selectKit(player, Kit.ELEMENTALISTE);
+                break;
+            case 5:
+                selectKit(player, Kit.ARCHER);
+                break;
+            default:
+                selectKit(player, Kit.BERSERKER);
+                break;
         }
-        else if(result == 1) {
-            selectKit(player, Kit.ASSASSIN);
-            return;
 
-        }
-        else if(result == 2) {
-            selectKit(player, Kit.TANK);
-            return;
 
-        }
-        else if(result == 3) {
-            selectKit(player, Kit.DRUIDE);
-            return;
-
-        }
-        else if(result == 4) {
-            selectKit(player, Kit.ELEMENTALISTE_FEU);
-            return;
-
-        }
-        else if(result == 5) {
-            selectKit(player, Kit.ARCHER);
-            return;
-
-        }
-        else if (result == 6) {
-            selectKit(player, Kit.ELEMENTALISTE_EAU);
-            return;
-        }
-        else {
-            selectKit(player, Kit.BERSERKER);
-            return;
-
-        }
     }
 
     public static boolean hasKit(Player player) {
@@ -139,46 +122,33 @@ public enum Kit {
         ItemMeta itM = it.getItemMeta();
         if(kit == Kit.BERSERKER) {
             it.setType(Material.DIAMOND_AXE);
-            itM.setLore(Arrays.asList("§eLivre Tranchant 4","§eEffet Force 1"));
+            itM.setLore(Arrays.asList("§eLivre Tranchant 3","§eEffet Force 1"));
 
         }
         else if(kit == Kit.ASSASSIN) {
             it.setType(Material.IRON_SWORD);
-            itM.setLore(Arrays.asList("§e3 Potions de Poison","§eInvisibilité"));
+            itM.setLore(Arrays.asList("§e3 Potions de Poison", "§eBâton knockback 3","§eInvisibilité"));
 
 
         }
         else if(kit == Kit.DRUIDE) {
             it.setType(Material.GLASS_BOTTLE);
-            itM.setLore(Arrays.asList("§e3 Potions de Régénération","§e5 Coeurs en plus"));
-
-        }
-        else if(kit == Kit.ELEMENTALISTE_FEU) {
-            it.setType(Material.LAVA_BUCKET);
-            itM.setLore(Arrays.asList("§eLivre fire aspect + flame","§eRésistance au feu"));
-
+            itM.setLore(Arrays.asList("§e3 Potions de Régénération", "§e3 Potions d'instant heal",  "§e2 Pommes d'or", "§e5 Coeurs supplémentaires"));
 
         }
         else  if (kit == Kit.ELEMENTALISTE) {
             it.setType(Material.FEATHER);
-            itM.setLore(Arrays.asList("§cElémentaliste Feu :", "§eLivre fire aspect + flame", "§eRésistance au feu",
-                    "§6---------------", "§bElémentaliste Eau :", "§eLivre depth strider 3 + frost walker 2","§eEffet apnée"));
-
-        }
-        else if (kit == Kit.ELEMENTALISTE_EAU) {
-            it.setType(Material.WATER_BUCKET);
-            itM.setLore(Arrays.asList("§eLivre depth strider 3 + frost walker 2","§eEffet apnée"));
-
+            itM.setLore(Arrays.asList("§eLivre fire aspect","§eLivre flame", "§eRésistance au feu", "§eLivre depth strider 3","§eEffet apnée"));
 
         }
         else if(kit == Kit.ARCHER) {
             it.setType(Material.BOW);
-            itM.setLore(Arrays.asList("§eLivre Infinity + Power 3", "§eSpeed 1"));
+            itM.setLore(Arrays.asList("§eLivre Infinity","§eLivre Power 4","§e16 toiles d'araignées", "§eSpeed 1"));
 
         }
         else if(kit == Kit.TANK) {
             it.setType(Material.DIAMOND_CHESTPLATE);
-            itM.setLore(Arrays.asList("§eLivre Protection 2", "§eRésistance 1"));
+            itM.setLore(Arrays.asList("§eLivre Protection 2","§eLivre Protection 3", "§eRésistance 1"));
 
         }
 
@@ -229,16 +199,13 @@ public enum Kit {
                     player.getInventory().addItem(stack, stack2, new ItemStack(Material.GOLDEN_APPLE, 2));
                     return;
                 }
-                else if(kit.getId() == "elementaliste_feu") {
+                else if(kit.getId() == "elementaliste") {
                     player.getInventory().addItem(getEnchantedBook(Enchantment.ARROW_FIRE, 1));
-                    player.getInventory().addItem(getEnchantedBook(Enchantment.FIRE_ASPECT, 2));
-                    return;
-                }
-                else if (kit.getId() == "elementaliste_eau") {
+                    player.getInventory().addItem(getEnchantedBook(Enchantment.FIRE_ASPECT, 1));
                     player.getInventory().addItem(getEnchantedBook(Enchantment.DEPTH_STRIDER, 3));
-                    player.getInventory().addItem(getEnchantedBook(Enchantment.FROST_WALKER, 2));
                     return;
                 }
+
             }
         }
     }
@@ -268,14 +235,12 @@ public enum Kit {
                 player.setHealth(50.0D);
 
             }
-            else if(kit.getId() == "elementaliste_feu") {
+            else if(kit.getId() == "elementaliste") {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE,0, true, false));
-
-            }
-            else if(kit.getId() == "elementaliste_eau") {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, Integer.MAX_VALUE,0, true, false));
 
             }
+
         }
     }
 
@@ -300,21 +265,6 @@ public enum Kit {
 
         stack.setItemMeta(meta);
         stack.setAmount(amount);
-        return stack;
-
-    }
-    private static ItemStack getPotionItem(PotionType potion, boolean extended, boolean upgraded, boolean splash) {
-        ItemStack stack = new ItemStack(Material.POTION);
-        if(splash) {
-            stack.setType(Material.SPLASH_POTION);
-        }
-
-
-        PotionMeta meta = (PotionMeta) stack.getItemMeta();
-        meta.setBasePotionData(new PotionData(potion,extended, upgraded));
-
-
-        stack.setItemMeta(meta);
         return stack;
 
     }

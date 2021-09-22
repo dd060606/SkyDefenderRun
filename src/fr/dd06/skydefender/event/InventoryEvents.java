@@ -148,15 +148,8 @@ public class InventoryEvents implements Listener {
             for (Kit kit : Kit.values()) {
 
                 if (current.getItemMeta() != null && current.getItemMeta().getDisplayName() != null) {
-                    if(current.getItemMeta().getDisplayName().equals("§bElémentaliste")) {
-                        Inventory invElementaliste = Bukkit.createInventory(null, 9, "§6Elémentaliste");
-                        invElementaliste.setItem(3, Kit.getIconFromKit(Kit.ELEMENTALISTE_FEU));
-                        invElementaliste.setItem(5, Kit.getIconFromKit(Kit.ELEMENTALISTE_EAU));
-                        player.openInventory(invElementaliste);
-                        player.updateInventory();
 
-                    }
-                    else if (current.getItemMeta().getDisplayName().equals("§b" + kit.getName())) {
+                     if (current.getItemMeta().getDisplayName().equals("§b" + kit.getName())) {
                         if (!kit.getPlayersKit().contains(player.getUniqueId())) {
                             Kit.selectKit(player, kit);
                             player.sendMessage("§aVous avez choisi le kit " + "§b" + kit.getName() + " §a!");
@@ -192,25 +185,6 @@ public class InventoryEvents implements Listener {
 
 
         }
-        else if (e.getView().getTitle().equals("§6Elémentaliste")) {
-            if (current.getItemMeta() != null && current.getItemMeta().getDisplayName() != null) {
-                for (Kit kit : Kit.values()) {
-                    if (current.getItemMeta().getDisplayName().equals("§b" + kit.getName())) {
-                        if (!kit.getPlayersKit().contains(player.getUniqueId())) {
-                            Kit.selectKit(player, kit);
-                            player.sendMessage("§aVous avez choisi le kit " + "§b" + kit.getName() + " §a!");
-                            Kit.giveItemsToPlayer(player);
-                            Kit.addEffectsToPlayer(player);
-                            player.closeInventory();
-                            player.updateInventory();
 
-                            break;
-
-                        }
-
-                    }
-                }
-            }
-        }
     }
 }
