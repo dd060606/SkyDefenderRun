@@ -102,15 +102,15 @@ public class RestoreGame {
 
 			CustomScoreBoard oldscoreboard = main.getGame().boards.get(uuid);
 			if(oldscoreboard != null) {
-				oldscoreboard.destroy();
+				oldscoreboard.delete();
 			}
 			if(main.getGame().boards.containsKey(uuid)) {
 				main.getGame().boards.remove(uuid);
 			}
 
 
-			CustomScoreBoard scoreboard = new CustomScoreBoard(player, "§bSkyDefender");
-			scoreboard.create();
+			CustomScoreBoard scoreboard = new CustomScoreBoard(player);
+			scoreboard.updateTitle("§bSkyDefender");
 			main.getGame().boards.put(player.getUniqueId(), scoreboard);
 			main.getGame().updateScoreboards(player.getUniqueId());
 			

@@ -3,6 +3,7 @@ main: fr.dd06.skydefender.SkyDefenderRun
 version: 1.0
 description: Plugin de SkyDefenderRun
 author: dd_06
+api-version: 1.17
 commands:
   sd:
     description: Afficher la liste des commandes.

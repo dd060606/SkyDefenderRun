@@ -155,17 +155,15 @@ public class GameStart {
 
 
 			if(!main.getGame().spectators.contains(allplayers.getUniqueId())) {
-			CustomScoreBoard scoreboard = new CustomScoreBoard(allplayers, "§bSkyDefender");
-			scoreboard.destroy();
-			scoreboard.create();
-			
+			CustomScoreBoard scoreboard = new CustomScoreBoard(allplayers);
+
 			main.getGame().boards.put(allplayers.getUniqueId(), scoreboard);
 			main.getGame().updateScoreboards(allplayers.getUniqueId());
 			}
 			else {
-				CustomScoreBoard specboard = new CustomScoreBoard(allplayers, "§bSkyDefender");
-				specboard.destroy();
-				specboard.create();
+				CustomScoreBoard specboard = new CustomScoreBoard(allplayers);
+				specboard.updateTitle("§bSkyDefender");
+
 				
 				main.getGame().specboards.put(allplayers.getUniqueId(), specboard);
 				main.getGame().updateSpectatorsBoards(allplayers.getUniqueId());

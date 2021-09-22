@@ -1,8 +1,7 @@
 package fr.dd06.skydefender.event;
 
 import fr.dd06.skydefender.SkyDefenderRun;
-import fr.dd06.skydefender.game.AutoStart;
-import fr.dd06.skydefender.game.SkyDefenderEnd;
+import fr.dd06.skydefender.game.*;
 import fr.dd06.skydefender.kits.Kit;
 import fr.dd06.skydefender.scoreboards.CustomScoreBoard;
 import fr.dd06.skydefender.utils.BlockLocationChecker;
@@ -52,9 +51,10 @@ public class PlayerEvents implements Listener {
                     player.setPlayerListName(ChatColor.RED + "[Attaquant] " + player.getName());
 
                 }
-                CustomScoreBoard board = new CustomScoreBoard(player, "§bSkyDefender");
-                board.destroy();
-                board.create();
+                CustomScoreBoard board = new CustomScoreBoard(player);
+                board.updateTitle("§bSkyDefender");
+
+
                 main.getGame().boards.put(player.getUniqueId(), board);
                 main.getGame().updateScoreboards(player.getUniqueId());
             } else {
@@ -64,10 +64,8 @@ public class PlayerEvents implements Listener {
                 if (!main.getGame().spectators.contains(player.getUniqueId())) {
                     main.getGame().spectators.add(player.getUniqueId());
                 }
-
-                CustomScoreBoard specboard = new CustomScoreBoard(player, "§bSkyDefender");
-                specboard.destroy();
-                specboard.create();
+                CustomScoreBoard specboard = new CustomScoreBoard(player);
+                specboard.updateTitle("§bSkyDefender");
                 main.getGame().specboards.put(player.getUniqueId(), specboard);
                 main.getGame().updateSpectatorsBoards(player.getUniqueId());
 
@@ -149,6 +147,12 @@ public class PlayerEvents implements Listener {
     @EventHandler
     public void OnQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
+
+        CustomScoreBoard board = main.getGame().boards.remove(player.getUniqueId());
+        if (board != null) {
+            board.delete();
+        }
+
         if (!main.getGame().isGameStarted()) {
             if (main.getGame().players.contains(player.getUniqueId()))
                 main.getGame().players.remove(player.getUniqueId());

@@ -53,51 +53,53 @@ public class GameData {
     public void updateScoreboards(UUID uuid) {
         if (boards.containsKey(uuid)) {
             CustomScoreBoard scoreboard = boards.get(uuid);
-            scoreboard.setLine(0, "§e ");
-            scoreboard.setLine(1, "§e ");
-            scoreboard.setLine(2, "§9Joueurs : " + this.players.size());
+            scoreboard.updateTitle("§bSkyDefender");
 
-            scoreboard.setLine(3, "§eJour : " + GameTime.jour);
-            scoreboard.setLine(4, "§6Temps : " + GameTime.minutes + ":" + GameTime.secondes);
+            scoreboard.updateLine(0, "§e ");
+            scoreboard.updateLine(1, "§e ");
+            scoreboard.updateLine(2, "§9Joueurs : " + this.players.size());
+
+            scoreboard.updateLine(3, "§eJour : " + GameTime.jour);
+            scoreboard.updateLine(4, "§6Temps : " + GameTime.minutes + ":" + GameTime.secondes);
             if (kills.get(uuid) == null) {
                kills.put(uuid, 0);
-                scoreboard.setLine(5, "§cKills : " +kills.get(uuid));
+                scoreboard.updateLine(5, "§cKills : " +kills.get(uuid));
             } else {
-                scoreboard.setLine(5, "§cKills : " + kills.get(uuid));
+                scoreboard.updateLine(5, "§cKills : " + kills.get(uuid));
             }
             if(pvp) {
-                scoreboard.setLine(6, "§6PvP : §aOn");
+                scoreboard.updateLine(6, "§6PvP : §aOn");
 
             }
             else {
-                scoreboard.setLine(6, "§6PvP : §cOff");
+                scoreboard.updateLine(6, "§6PvP : §cOff");
 
             }
 
             if(assault) {
-                scoreboard.setLine(7, "§6Assaut : §aOn");
+                scoreboard.updateLine(7, "§6Assaut : §aOn");
 
             }
             else {
-                scoreboard.setLine(7, "§6Assaut : §cOff");
+                scoreboard.updateLine(7, "§6Assaut : §cOff");
 
             }
             if (this.defenders.contains(uuid)) {
-                scoreboard.setLine(8, "§7Equipe : §bDéfenseurs");
+                scoreboard.updateLine(8, "§7Equipe : §bDéfenseurs");
             } else if (this.attackers.contains(uuid)) {
-                scoreboard.setLine(8, "§7Equipe : §cAttaquants");
+                scoreboard.updateLine(8, "§7Equipe : §cAttaquants");
             } else if (this.spectators.contains(uuid)) {
-                scoreboard.setLine(8, "§7Equipe : §5Spectateurs");
+                scoreboard.updateLine(8, "§7Equipe : §5Spectateurs");
             }
 
 
             if(BannerAttack.attacking) {
-                scoreboard.setLine(9, "§cAttaque : " + BannerAttack.minutes + "mins | "+BannerAttack.secondes + "secs/" + minutesBannerCooldown + "mins");
+                scoreboard.updateLine(9, "§cAttaque : " + BannerAttack.minutes + "mins | "+BannerAttack.secondes + "secs/" + minutesBannerCooldown + "mins");
             }
 
             if(Kit.hasKit(Bukkit.getPlayer(uuid))) {
 
-                scoreboard.setLine(10, "§dKit : §c" + Kit.getPlayerKit(Bukkit.getPlayer(uuid)).getName());
+                scoreboard.updateLine(10, "§dKit : §c" + Kit.getPlayerKit(Bukkit.getPlayer(uuid)).getName());
             }
         }
     }
@@ -105,34 +107,36 @@ public class GameData {
     public void updateSpectatorsBoards(UUID uuid) {
         if (specboards.containsKey(uuid)) {
             CustomScoreBoard scoreboard = specboards.get(uuid);
-            scoreboard.setLine(0, "§e ");
-            scoreboard.setLine(1, "§e ");
-            scoreboard.setLine(2, "§9Joueurs : " + this.players.size());
-            scoreboard.setLine(3, "§eJour : " + GameTime.jour);
-            scoreboard.setLine(4, "§6Temps : " + GameTime.minutes + ":" + GameTime.secondes);
+            scoreboard.updateTitle("§bSkyDefender");
+
+            scoreboard.updateLine(0, "§e ");
+            scoreboard.updateLine(1, "§e ");
+            scoreboard.updateLine(2, "§9Joueurs : " + this.players.size());
+            scoreboard.updateLine(3, "§eJour : " + GameTime.jour);
+            scoreboard.updateLine(4, "§6Temps : " + GameTime.minutes + ":" + GameTime.secondes);
 
             if(pvp) {
-                scoreboard.setLine(5, "§6PvP : §aOn");
+                scoreboard.updateLine(5, "§6PvP : §aOn");
 
             }
             else {
-                scoreboard.setLine(5, "§6PvP : §cOff");
+                scoreboard.updateLine(5, "§6PvP : §cOff");
 
             }
 
             if(assault) {
-                scoreboard.setLine(6, "§6Assaut : §aOn");
+                scoreboard.updateLine(6, "§6Assaut : §aOn");
 
             }
             else {
-                scoreboard.setLine(6, "§6Assaut : §cOff");
+                scoreboard.updateLine(6, "§6Assaut : §cOff");
 
             }
-            scoreboard.setLine(7, "§7Equipe : §5Spectateurs");
+            scoreboard.updateLine(7, "§7Equipe : §5Spectateurs");
 
 
             if(BannerAttack.attacking) {
-                scoreboard.setLine(8, "§cAttaque : " + BannerAttack.minutes + "mins | "+BannerAttack.secondes + "secs/" +minutesBannerCooldown + "mins");
+                scoreboard.updateLine(8, "§cAttaque : " + BannerAttack.minutes + "mins | "+BannerAttack.secondes + "secs/" +minutesBannerCooldown + "mins");
             }
 
         }

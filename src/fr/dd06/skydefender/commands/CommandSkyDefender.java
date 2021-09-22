@@ -102,7 +102,7 @@ public class CommandSkyDefender implements CommandExecutor, Listener {
 
 										CustomScoreBoard oldscoreboard = main.getGame().boards.get(uuid);
 										if(oldscoreboard != null) {
-											oldscoreboard.destroy();
+											oldscoreboard.delete();
 
 										}
 										if(main.getGame().boards.containsKey(uuid)) {
