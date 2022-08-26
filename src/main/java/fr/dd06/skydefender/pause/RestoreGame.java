@@ -5,7 +5,7 @@ import fr.dd06.skydefender.SkyDefenderRun;
 import fr.dd06.skydefender.GameTime;
 import fr.dd06.skydefender.game.BannerAttack;
 import fr.dd06.skydefender.kits.Kit;
-import fr.dd06.skydefender.scoreboards.CustomScoreBoard;
+import fr.dd06.skydefender.scoreboards.FastBoard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -100,7 +100,7 @@ public class RestoreGame {
 
 
 
-			CustomScoreBoard oldscoreboard = main.getGame().boards.get(uuid);
+			FastBoard oldscoreboard = main.getGame().boards.get(uuid);
 			if(oldscoreboard != null) {
 				oldscoreboard.delete();
 			}
@@ -109,7 +109,7 @@ public class RestoreGame {
 			}
 
 
-			CustomScoreBoard scoreboard = new CustomScoreBoard(player);
+			FastBoard scoreboard = new FastBoard(player);
 			scoreboard.updateTitle("§bSkyDefender");
 			main.getGame().boards.put(player.getUniqueId(), scoreboard);
 			main.getGame().updateScoreboards(player.getUniqueId());

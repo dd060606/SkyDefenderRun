@@ -35,13 +35,14 @@ public class BlockLoots {
             block.getWorld().dropItemNaturally(breaker.getLocation(), new ItemStack(Material.DIAMOND, 2));
 
         }
-        else if((block.getType().equals(Material.ACACIA_LEAVES)) || (block.getType().equals(Material.BIRCH_LEAVES)) || (block.getType().equals(Material.OAK_LEAVES) ) || (block.getType().equals(Material.DARK_OAK_LEAVES)) || (block.getType().equals(Material.JUNGLE_LEAVES)) || (block.getType().equals(Material.SPRUCE_LEAVES)) ) {
+        else if((block.getType().equals(Material.ACACIA_LEAVES)) || (block.getType().equals(Material.BIRCH_LEAVES))
+                || (block.getType().equals(Material.OAK_LEAVES) ) || (block.getType().equals(Material.DARK_OAK_LEAVES))
+                || (block.getType().equals(Material.JUNGLE_LEAVES)) || (block.getType().equals(Material.SPRUCE_LEAVES))
+                || (block.getType().equals(Material.FLOWERING_AZALEA_LEAVES)) || (block.getType().equals(Material.AZALEA_LEAVES)) ) {
             Random random = new Random();
             if(random.nextInt(15) == 1) {
                 block.getWorld().dropItemNaturally(breaker.getLocation(), new ItemStack(Material.APPLE, 1));
-
             }
-
         }
         else if(block.getType().equals(Material.SAND)) {
             block.getWorld().dropItemNaturally(breaker.getLocation(), new ItemStack(Material.GLASS, 1));
@@ -49,25 +50,21 @@ public class BlockLoots {
         }
         else if(block.getType().equals(Material.COAL_ORE)) {
             block.getWorld().dropItemNaturally(breaker.getLocation(), new ItemStack(Material.TORCH, 4));
-
+            block.getWorld().dropItemNaturally(breaker.getLocation(), new ItemStack(Material.COAL, 1));
         }
         else if(block.getType().equals(Material.NETHER_QUARTZ_ORE)) {
 
             Random rnd = new Random();
-
             if(rnd.nextInt(2) == 1)  {
                 block.getWorld().dropItemNaturally(breaker.getLocation(), new ItemStack(Material.EXPERIENCE_BOTTLE, 2));
-
             }
             else {
                 block.getWorld().dropItemNaturally(breaker.getLocation(), new ItemStack(Material.EXPERIENCE_BOTTLE, 1));
-
             }
 
         }
         else if(block.getType().equals(Material.GRAVEL)) {
             block.getWorld().dropItemNaturally(breaker.getLocation(), new ItemStack(Material.FLINT, 1));
-
         }
         else if(block.getType().equals(Material.SUGAR_CANE)) {
             block.getWorld().dropItemNaturally(breaker.getLocation(), new ItemStack(Material.SUGAR_CANE, 2));
@@ -132,15 +129,20 @@ public class BlockLoots {
     }
     static {
         blocks.add(Material.IRON_ORE);
+        blocks.add(Material.DEEPSLATE_IRON_ORE);
         blocks.add(Material.GOLD_ORE);
+        blocks.add(Material.DEEPSLATE_GOLD_ORE);
         blocks.add(Material.LAPIS_ORE);
+        blocks.add(Material.DEEPSLATE_LAPIS_ORE);
         blocks.add(Material.DIAMOND_ORE);
+        blocks.add(Material.DEEPSLATE_DIAMOND_ORE);
         blocks.add(Material.ACACIA_LEAVES);
         blocks.add(Material.BIRCH_LEAVES);
         blocks.add(Material.SPRUCE_LEAVES);
         blocks.add(Material.JUNGLE_LEAVES);
         blocks.add(Material.OAK_LEAVES);
-        blocks.add(Material.DARK_OAK_LEAVES);
+        blocks.add(Material.AZALEA_LEAVES);
+        blocks.add(Material.FLOWERING_AZALEA);
         blocks.add(Material.SAND);
         blocks.add(Material.COAL_ORE);
         blocks.add(Material.NETHER_QUARTZ_ORE);

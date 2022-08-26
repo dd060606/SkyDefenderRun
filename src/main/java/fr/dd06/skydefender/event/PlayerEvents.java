@@ -3,7 +3,7 @@ package fr.dd06.skydefender.event;
 import fr.dd06.skydefender.SkyDefenderRun;
 import fr.dd06.skydefender.game.*;
 import fr.dd06.skydefender.kits.Kit;
-import fr.dd06.skydefender.scoreboards.CustomScoreBoard;
+import fr.dd06.skydefender.scoreboards.FastBoard;
 import fr.dd06.skydefender.utils.BlockLocationChecker;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
@@ -51,7 +51,7 @@ public class PlayerEvents implements Listener {
                     player.setPlayerListName(ChatColor.RED + "[Attaquant] " + player.getName());
 
                 }
-                CustomScoreBoard board = new CustomScoreBoard(player);
+                FastBoard board = new FastBoard(player);
                 board.updateTitle("§bSkyDefender");
 
 
@@ -64,7 +64,7 @@ public class PlayerEvents implements Listener {
                 if (!main.getGame().spectators.contains(player.getUniqueId())) {
                     main.getGame().spectators.add(player.getUniqueId());
                 }
-                CustomScoreBoard specboard = new CustomScoreBoard(player);
+                FastBoard specboard = new FastBoard(player);
                 specboard.updateTitle("§bSkyDefender");
                 main.getGame().specboards.put(player.getUniqueId(), specboard);
                 main.getGame().updateSpectatorsBoards(player.getUniqueId());
@@ -148,7 +148,7 @@ public class PlayerEvents implements Listener {
     public void OnQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        CustomScoreBoard board = main.getGame().boards.remove(player.getUniqueId());
+        FastBoard board = main.getGame().boards.remove(player.getUniqueId());
         if (board != null) {
             board.delete();
         }

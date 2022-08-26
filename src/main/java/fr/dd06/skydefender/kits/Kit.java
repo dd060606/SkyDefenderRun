@@ -133,7 +133,7 @@ public enum Kit {
         }
         else if(kit == Kit.DRUIDE) {
             it.setType(Material.GLASS_BOTTLE);
-            itM.setLore(Arrays.asList("§e3 Potions de Régénération", "§e3 Potions d'instant heal",  "§e2 Pommes d'or", "§e5 Coeurs supplémentaires"));
+            itM.setLore(Arrays.asList("§e3 Potions de Régénération", "§e3 Potions d'instant heal", "§e10 Coeurs supplémentaires"));
 
         }
         else  if (kit == Kit.ELEMENTALISTE) {
@@ -196,7 +196,7 @@ public enum Kit {
 
                     ItemStack stack = getPotionItem(PotionType.REGEN,false,false, true, 3);
                     ItemStack stack2 = getPotionItem(PotionType.INSTANT_HEAL,false,false, true, 3);
-                    player.getInventory().addItem(stack, stack2, new ItemStack(Material.GOLDEN_APPLE, 2));
+                    player.getInventory().addItem(stack, stack2);
                     return;
                 }
                 else if(kit.getId() == "elementaliste") {
@@ -231,8 +231,8 @@ public enum Kit {
             }
             else if(kit.getId() == "druide") {
                 AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-                attribute.setBaseValue(50.0D);
-                player.setHealth(50.0D);
+                attribute.setBaseValue(60.0D);
+                player.setHealth(60.0D);
 
             }
             else if(kit.getId() == "elementaliste") {

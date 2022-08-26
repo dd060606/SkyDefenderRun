@@ -38,7 +38,7 @@ import java.util.function.Predicate;
  *
  * @author MrMicky
  */
-public final class ScoreBoardReflection {
+public final class FastReflection {
 
     private static final String NM_PACKAGE = "net.minecraft";
     public static final String OBC_PACKAGE = "org.bukkit.craftbukkit";
@@ -51,7 +51,7 @@ public final class ScoreBoardReflection {
 
     private static volatile Object theUnsafe;
 
-    private ScoreBoardReflection() {
+    private FastReflection() {
         throw new UnsupportedOperationException();
     }
 
@@ -129,7 +129,7 @@ public final class ScoreBoardReflection {
         }
 
         if (theUnsafe == null) {
-            synchronized (ScoreBoardReflection.class) {
+            synchronized (FastReflection.class) {
                 if (theUnsafe == null) {
                     Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
                     Field theUnsafeField = unsafeClass.getDeclaredField("theUnsafe");
@@ -139,7 +139,8 @@ public final class ScoreBoardReflection {
             }
         }
 
-        Method allocateMethod = theUnsafe.getClass().getMethod("allocateInstance", Class.class);
+        MethodType allocateMethodType = MethodType.methodType(Object.class, Class.class);
+        MethodHandle allocateMethod = lookup.findVirtual(theUnsafe.getClass(), "allocateInstance", allocateMethodType);
         return () -> allocateMethod.invoke(theUnsafe, packetClass);
     }
 

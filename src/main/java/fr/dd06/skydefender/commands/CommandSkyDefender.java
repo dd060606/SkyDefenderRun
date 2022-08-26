@@ -5,7 +5,7 @@ import fr.dd06.skydefender.SkyDefenderRun;
 import fr.dd06.skydefender.pause.RestoreGame;
 import fr.dd06.skydefender.pause.SaveConfig;
 import fr.dd06.skydefender.pause.SaveGame;
-import fr.dd06.skydefender.scoreboards.CustomScoreBoard;
+import fr.dd06.skydefender.scoreboards.FastBoard;
 import fr.dd06.skydefender.game.AutoStart;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -100,7 +100,7 @@ public class CommandSkyDefender implements CommandExecutor, Listener {
 									for (Player allplayers : Bukkit.getOnlinePlayers()) {
 										UUID uuid = allplayers.getUniqueId();
 
-										CustomScoreBoard oldscoreboard = main.getGame().boards.get(uuid);
+										FastBoard oldscoreboard = main.getGame().boards.get(uuid);
 										if(oldscoreboard != null) {
 											oldscoreboard.delete();
 

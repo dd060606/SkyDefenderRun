@@ -12,11 +12,12 @@ import fr.dd06.skydefender.game.BannerAttack;
 import fr.dd06.skydefender.game.GameData;
 import fr.dd06.skydefender.kits.Kit;
 import fr.dd06.skydefender.pause.SaveConfig;
-import fr.dd06.skydefender.scoreboards.CustomScoreBoard;
-import org.bukkit.Bukkit;
+import fr.dd06.skydefender.pause.SaveGame;
+import fr.dd06.skydefender.scoreboards.FastBoard;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,6 +68,11 @@ public class SkyDefenderRun extends JavaPlugin implements Listener {
 
 	@Override
 	public void onDisable() {
+		if(game.isGameStarted()) {
+			SaveGame saveGame = new SaveGame(this);
+			saveGame.saveGame();
+			game.setPaused(true);
+		}
 		super.onDisable();
 	}
 

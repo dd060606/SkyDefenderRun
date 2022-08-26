@@ -4,7 +4,7 @@ import fr.dd06.skydefender.SkyDefenderRun;
 
 import fr.dd06.skydefender.GameTime;
 import fr.dd06.skydefender.kits.Kit;
-import fr.dd06.skydefender.scoreboards.CustomScoreBoard;
+import fr.dd06.skydefender.scoreboards.FastBoard;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -155,13 +155,13 @@ public class GameStart {
 
 
 			if(!main.getGame().spectators.contains(allplayers.getUniqueId())) {
-			CustomScoreBoard scoreboard = new CustomScoreBoard(allplayers);
+				FastBoard scoreboard = new FastBoard(allplayers);
 
 			main.getGame().boards.put(allplayers.getUniqueId(), scoreboard);
 			main.getGame().updateScoreboards(allplayers.getUniqueId());
 			}
 			else {
-				CustomScoreBoard specboard = new CustomScoreBoard(allplayers);
+				FastBoard specboard = new FastBoard(allplayers);
 				specboard.updateTitle("§bSkyDefender");
 
 				

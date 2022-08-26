@@ -6,7 +6,6 @@ import fr.dd06.skydefender.game.AutoStart;
 import fr.dd06.skydefender.game.BannerAttack;
 import fr.dd06.skydefender.game.SkyDefenderEnd;
 import fr.dd06.skydefender.kits.Kit;
-import fr.dd06.skydefender.scoreboards.CustomScoreBoard;
 import fr.dd06.skydefender.utils.BlockLocationChecker;
 import fr.dd06.skydefender.utils.BlockLoots;
 import org.bukkit.*;
@@ -94,7 +93,7 @@ public class BlockEvents implements Listener {
                         event.setCancelled(true);
 
                     } else if (main.getGame().attackers.contains(breaker.getUniqueId())) {
-                        if (main.getGame().defenders.size() <= 0) {
+                        if (main.getGame().defenders.size() == 0) {
                             breaker.sendMessage(
                                     "§e[SkyDefenderRun] : §a" + breaker.getName() + " vient de détruire la bannière !");
                             SkyDefenderEnd skydefenderEnd = new SkyDefenderEnd(main);

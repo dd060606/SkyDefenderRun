@@ -1,5 +1,6 @@
 package fr.dd06.skydefender;
 
+import fr.dd06.skydefender.pause.SaveGame;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
@@ -38,8 +39,6 @@ public class GameTime extends BukkitRunnable {
 			minutes = 0;
 			jour++;
 			Bukkit.broadcastMessage("§e[SkyDefenderRun] : §aDébut du jour " + jour + " !");
-
-
 			if(jour >= main.getGame().getDaysCoordsMessage()) {
 				Bukkit.broadcastMessage("§e[SkyDefenderRun] : §aCoordonnées des joueurs : \n");
 

@@ -4,7 +4,7 @@ import fr.dd06.skydefender.GameTime;
 import fr.dd06.skydefender.SkyDefenderRun;
 import fr.dd06.skydefender.kits.Kit;
 import fr.dd06.skydefender.pause.SaveConfig;
-import fr.dd06.skydefender.scoreboards.CustomScoreBoard;
+import fr.dd06.skydefender.scoreboards.FastBoard;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -20,8 +20,8 @@ public class GameData {
 
     public HashMap<UUID, Integer> kills = new HashMap<>();
 
-    public Map<UUID, CustomScoreBoard> boards = new HashMap<>();
-    public Map<UUID, CustomScoreBoard> specboards = new HashMap<>();
+    public Map<UUID, FastBoard> boards = new HashMap<>();
+    public Map<UUID, FastBoard> specboards = new HashMap<>();
 
     public ArrayList<UUID> defenders = new ArrayList<>();
     public ArrayList<UUID> attackers = new ArrayList<>();
@@ -52,7 +52,7 @@ public class GameData {
 
     public void updateScoreboards(UUID uuid) {
         if (boards.containsKey(uuid)) {
-            CustomScoreBoard scoreboard = boards.get(uuid);
+            FastBoard scoreboard = boards.get(uuid);
             scoreboard.updateTitle("§bSkyDefender");
 
             scoreboard.updateLine(0, "§e ");
@@ -106,7 +106,7 @@ public class GameData {
 
     public void updateSpectatorsBoards(UUID uuid) {
         if (specboards.containsKey(uuid)) {
-            CustomScoreBoard scoreboard = specboards.get(uuid);
+            FastBoard scoreboard = specboards.get(uuid);
             scoreboard.updateTitle("§bSkyDefender");
 
             scoreboard.updateLine(0, "§e ");
