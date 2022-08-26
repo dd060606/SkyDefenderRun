@@ -20,18 +20,18 @@ public class BlockLoots {
 
     public static void dropLootFromBlock(Block block, Player breaker) {
 
-        if(block.getType().equals(Material.IRON_ORE)) {
+        if(block.getType().equals(Material.IRON_ORE) || block.getType().equals(Material.DEEPSLATE_IRON_ORE)) {
             block.getWorld().dropItemNaturally(breaker.getLocation(), new ItemStack(Material.IRON_INGOT, 2));
         }
-        else if(block.getType().equals(Material.GOLD_ORE)) {
+        else if(block.getType().equals(Material.GOLD_ORE) || block.getType().equals(Material.DEEPSLATE_GOLD_ORE)) {
             block.getWorld().dropItemNaturally(breaker.getLocation(), new ItemStack(Material.GOLD_INGOT, 2));
 
         }
-        else if(block.getType().equals(Material.LAPIS_ORE)) {
+        else if(block.getType().equals(Material.LAPIS_ORE) || block.getType().equals(Material.DEEPSLATE_LAPIS_ORE)) {
             block.getWorld().dropItemNaturally(breaker.getLocation(), new ItemStack(Material.LAPIS_BLOCK, 2));
 
         }
-        else if(block.getType().equals(Material.DIAMOND_ORE)) {
+        else if(block.getType().equals(Material.DIAMOND_ORE) || block.getType().equals(Material.DEEPSLATE_DIAMOND_ORE)) {
             block.getWorld().dropItemNaturally(breaker.getLocation(), new ItemStack(Material.DIAMOND, 2));
 
         }
@@ -48,7 +48,7 @@ public class BlockLoots {
             block.getWorld().dropItemNaturally(breaker.getLocation(), new ItemStack(Material.GLASS, 1));
 
         }
-        else if(block.getType().equals(Material.COAL_ORE)) {
+        else if(block.getType().equals(Material.COAL_ORE ) || block.getType().equals(Material.DEEPSLATE_COAL_ORE)) {
             block.getWorld().dropItemNaturally(breaker.getLocation(), new ItemStack(Material.TORCH, 4));
             block.getWorld().dropItemNaturally(breaker.getLocation(), new ItemStack(Material.COAL, 1));
         }
